@@ -1,1 +1,3 @@
+cd rest-client-app
 npm test
+
