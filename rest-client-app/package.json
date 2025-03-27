@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "playwright test",
-    "prepare": "husky"
+    "prepare": "cd .. && husky rest-client-app/.husky",
+    "prettier-fix": "prettier --write ."
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.2",
@@ -30,7 +31,12 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.5",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-compiler": "^19.0.0-beta-aeaed83-20250323",
     "husky": "^9.1.7",
+    "prettier": "3.5.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
