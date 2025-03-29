@@ -1,16 +1,15 @@
 {
-  "Home": {
-    "title": "Руководство по i18n в NextJS",
-    "description": "Инструкция по работе с i18n на основе пути маршрута или домена в Nextjs v15"
+  "Header": {
+    "sign_in": "Войти",
+    "sign_up": "Регистрация"
   },
-  "Step1": {
-    "title": "Шаг 1. Заголовок",
-    "EXPLANATION_PARAGRAPH1": "рыба"
+  "MainPage": {
+    "title": "Главная страница"
   },
-  "Step2": {
-    "title": "Шаг 2. Заголовок",
-    "EXPLANATION_PARAGRAPH1": "рыба",
-    "EXPLANATION_PARAGRAPH2": "рыба",
-    "EXPLANATION_PARAGRAPH3": "рыба"
+  "SignIn": {
+    "title": "Войти"
+  },
+  "SignUp": {
+    "title": "Регистрация"
   }
 }

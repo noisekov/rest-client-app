@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 
-export default function Home() {
-  const t = useTranslations('MainPage');
+export default function SignIn() {
+  const t = useTranslations('SignIn');
 
   return <div>{t('title')}</div>;
 }
