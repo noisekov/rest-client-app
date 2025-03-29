@@ -1,6 +1,9 @@
 import { HeadersList } from '@/components/HeadersList/HeadersList';
 import { SelectMethod } from '@/components/SelectMethod/SelectMethod';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function RestAPI() {
   return (
@@ -10,39 +13,17 @@ export default function RestAPI() {
         <fieldset className="border-2 border-gray-300 rounded-md p-4 bg-gray-50">
           <legend className="px-2 font-semibold text-lg">REST Client</legend>
           <SelectMethod />
-          <input
+          <Input 
             id="path"
-            placeholder="Endpoint URL"
-            className="px-3 py-2 m-2 border rounded"
-          />
+            placeholder="Endpoint URL"/>
           <HeadersList />
           <div className="mb-4">
-            <label
-              htmlFor="code"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Code
-            </label>
-            <textarea
-              id="code"
-              placeholder="// Your code here"
-              rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono text-sm "
-            />
+            <Label htmlFor="code" className='mb-1'>Code</Label>
+            <Textarea placeholder="// Your code here" id="code"/>
           </div>
           <div className="mb-2">
-            <label
-              htmlFor="body"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Request Body
-            </label>
-            <textarea
-              id="body"
-              placeholder='{"key": "value"}'
-              rows={6}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono text-sm "
-            />
+            <Label htmlFor="body" className='mb-1'>Request Body</Label>
+            <Textarea placeholder='{"key": "value"}' id="body"/>
           </div>
           <Button type="button" className="cursor-pointer">
             Send Request
@@ -54,30 +35,11 @@ export default function RestAPI() {
         <fieldset className="border-2 border-gray-300 rounded-md p-4 bg-gray-50">
           <legend className="px-2 font-semibold text-lg">Response </legend>
           <div className="mb-4">
-            <label
-              htmlFor="response-status"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Status Code
-            </label>
-            <input
-              id="response-status"
-              readOnly
-              className="px-3 py-2 border border-gray-300 rounded-md bg-gray-100"
-            />
+            <Label htmlFor="response-status" className='mb-1'>Status Code</Label>
+            <Input id="response-status" readOnly className='bg-gray-100'/>
             <div className="mb-2">
-              <label
-                htmlFor="response-body"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Response Body
-              </label>
-              <textarea
-                id="response-body"
-                readOnly
-                rows={8}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono text-sm bg-gray-100"
-              />
+              <Label htmlFor="response-body" className='mb-1'>Response Body</Label>
+              <Textarea  id="response-body" readOnly className='bg-gray-100'/>
             </div>
           </div>
         </fieldset>

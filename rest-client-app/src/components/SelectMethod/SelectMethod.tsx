@@ -22,7 +22,7 @@ export function SelectMethod() {
 
   return (
     <Select onValueChange={onChange} defaultValue={method}>
-      <SelectTrigger className={`${selectClasses[method]} w-[180px]`}>
+      <SelectTrigger className={`${selectClasses[method]} w-[180px] mb-2`}>
         <SelectValue placeholder="Select a method" />
       </SelectTrigger>
       <SelectContent>

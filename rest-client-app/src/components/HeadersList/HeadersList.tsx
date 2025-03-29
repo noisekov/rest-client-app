@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 
 type Header = {
   id: string;
@@ -48,19 +49,17 @@ export function HeadersList() {
           className="grid gap-2 mb-2"
           style={{ gridTemplateColumns: '1fr 1fr 100px' }}
         >
-          <input
+          < Input
             type="text"
             value={header.key}
             placeholder="Key"
             onChange={(e) => updateHeader(header.id, 'key', e.target.value)}
-            className="px-3 py-2 border rounded"
           />
-          <input
+          <Input
             type="text"
             value={header.value}
             onChange={(e) => updateHeader(header.id, 'value', e.target.value)}
             placeholder="Value"
-            className="px-3 py-2 border rounded"
           />
           <Button
             variant="destructive"
