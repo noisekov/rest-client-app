@@ -13,7 +13,7 @@ export function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const t = useTranslations('Header');
   const locale = useLocale();
 
@@ -39,6 +39,7 @@ export function Header() {
           size="lg"
           defaultValue={locale}
           onValueChange={hanlderLanguage}
+          disabled={isPending}
         >
           <ToggleGroupItem variant="outline" value="en">
             EN
