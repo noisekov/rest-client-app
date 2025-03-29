@@ -4,10 +4,10 @@ import Image from 'next/image';
 import icon from '../../../public/logo.png';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Button } from '@/components/ui/button';
-import { usePathname, useRouter } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useTransition } from 'react';
+import { usePathname, useRouter } from '@/i18n/navigation';
 
 export function Header() {
   const router = useRouter();
@@ -45,14 +45,10 @@ export function Header() {
           </ToggleGroupItem>
         </ToggleGroup>
         <Button variant="outline" size="lg" asChild>
-          <Link href="/signin" locale={locale}>
-            {t('sign_in')}
-          </Link>
+          <Link href="/signin">{t('sign_in')}</Link>
         </Button>
         <Button size="lg" asChild>
-          <Link href="/signup" locale={locale}>
-            {t('sign_up')}
-          </Link>
+          <Link href="/signup">{t('sign_up')}</Link>
         </Button>
       </div>
     </header>
