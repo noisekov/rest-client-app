@@ -13,12 +13,11 @@ export function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
-  const [isPendig, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const t = useTranslations('Header');
   const locale = useLocale();
 
   const hanlderLanguage = (event: 'en' | 'ru') => {
-    console.log(isPendig);
     if (!event) return;
 
     startTransition(() => {
