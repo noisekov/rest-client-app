@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { Label } from '../ui/label';
 
 type Header = {
   id: string;
@@ -36,12 +37,12 @@ export function HeadersList() {
   return (
     <fieldset className="border p-4 rounded">
       <legend className="px-2 font-medium">Headers</legend>
-      <Button onClick={addHeader} type="button" className="cursor-pointer">
+      <Button onClick={addHeader} type="button" className="cursor-pointer mb-2">
         Add header
       </Button>
       <div className="grid grid-cols-2 gap-2 mb-2 font-medium">
-        <span>Key</span>
-        <span>Value</span>
+        <Label>Key</Label>
+        <Label>Value</Label>
       </div>
       {headers.map((header) => (
         <div
