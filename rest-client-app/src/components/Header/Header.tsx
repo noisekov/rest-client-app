@@ -45,10 +45,14 @@ export function Header() {
           </ToggleGroupItem>
         </ToggleGroup>
         <Button variant="outline" size="lg" asChild>
-          <Link href="/signin">{t('sign_in')}</Link>
+          <Link href="/signin" locale={locale}>
+            {t('sign_in')}
+          </Link>
         </Button>
         <Button size="lg" asChild>
-          <Link href="/signup">{t('sign_up')}</Link>
+          <Link href="/signup" locale={locale}>
+            {t('sign_up')}
+          </Link>
         </Button>
       </div>
     </header>
