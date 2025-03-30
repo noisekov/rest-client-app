@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Methods } from './types';
 import { selectClasses } from './classes';
+import { useTranslations } from 'next-intl';
 import {
   Select,
   SelectContent,
@@ -14,6 +15,8 @@ import {
 } from '@/components/ui/select';
 
 export function SelectMethod() {
+  const t = useTranslations('Restful');
+
   const [method, setMethod] = useState<Methods>(Methods.GET);
 
   const onChange = (value: Methods) => {
@@ -23,11 +26,11 @@ export function SelectMethod() {
   return (
     <Select onValueChange={onChange} defaultValue={method}>
       <SelectTrigger className={`${selectClasses[method]} w-[180px] mb-2`}>
-        <SelectValue placeholder="Select a method" />
+        <SelectValue placeholder={t('select_method')} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup className={`${selectClasses[method]}`}>
-          <SelectLabel>METHODS</SelectLabel>
+          <SelectLabel>{t('methods_label')}</SelectLabel>
           {Object.values(Methods).map((method) => {
             return (
               <SelectItem

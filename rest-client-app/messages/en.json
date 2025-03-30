@@ -19,7 +19,7 @@
     "code": "Code",
     "code_placeholder": "// Your code here",
     "request_body": "Request Body",
-    "body_placeholder": "{\"key\": \"value\"}",
+    "body_placeholder": "{\n  \"key\": \"value\"\n}",
     "send_request": "Send Request",
     "response": "Response",
     "status_code": "Status Code",

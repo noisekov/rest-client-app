@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -11,6 +12,8 @@ type Header = {
 };
 
 export function HeadersList() {
+  const t = useTranslations('Restful');
+
   const [headers, setHeaders] = useState<Header[]>([
     { id: crypto.randomUUID(), key: '', value: '' },
   ]);
@@ -36,13 +39,13 @@ export function HeadersList() {
 
   return (
     <fieldset className="border p-4 rounded">
-      <legend className="px-2 font-medium">Headers</legend>
+      <legend className="px-2 font-medium">{t('headers')}</legend>
       <Button onClick={addHeader} type="button" className="cursor-pointer mb-2">
-        Add header
+        {t('add_header')}
       </Button>
       <div className="grid grid-cols-2 gap-2 mb-2 font-medium">
-        <Label>Key</Label>
-        <Label>Value</Label>
+        <Label>{t('key')}</Label>
+        <Label>{t('value')}</Label>
       </div>
       {headers.map((header) => (
         <div
@@ -53,14 +56,14 @@ export function HeadersList() {
           < Input
             type="text"
             value={header.key}
-            placeholder="Key"
+            placeholder={t('key')}
             onChange={(e) => updateHeader(header.id, 'key', e.target.value)}
           />
           <Input
             type="text"
             value={header.value}
             onChange={(e) => updateHeader(header.id, 'value', e.target.value)}
-            placeholder="Value"
+            placeholder={t('value')}
           />
           <Button
             variant="destructive"
@@ -68,7 +71,7 @@ export function HeadersList() {
             type="button"
             className="cursor-pointer"
           >
-            Remove
+            {t('remove')}
           </Button>
         </div>
       ))}

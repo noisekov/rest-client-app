@@ -27,7 +27,7 @@ export default function RestAPI() {
           </div>
           <div className="mb-2">
             <Label htmlFor="body" className='mb-1'>{t('request_body')}</Label>
-            <Textarea placeholder={t('body_placeholder')} id="body"/>
+            <Textarea placeholder={t.raw('body_placeholder')} id="body"/>
           </div>
           <Button type="button" className="cursor-pointer">
             {t('send_request')}
