@@ -11,5 +11,18 @@
   },
   "SignUp": {
     "title": "Регистрация"
+  },
+  "Restful": {
+    "title": "RestAPI",
+    "rest_client": "REST Клиент",
+    "endpoint_url": "URL конечной точки",
+    "code": "Код",
+    "code_placeholder": "// Ваш код здесь",
+    "request_body": "Тело запроса",
+    "body_placeholder": "{\"ключ\": \"значение\"}",
+    "send_request": "Отправить запрос",
+    "response": "Ответ",
+    "status_code": "Код состояния",
+    "response_body": "Тело ответа"
   }
 }
