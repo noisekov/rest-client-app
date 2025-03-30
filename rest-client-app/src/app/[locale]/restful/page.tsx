@@ -4,42 +4,46 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useTranslations } from 'next-intl';
 
 export default function RestAPI() {
+  const t = useTranslations('Restful');
+  
   return (
     <section className="max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">RestAPI</h2>
+      <h2 className="text-2xl font-bold mb-6">{t('title')}</h2>
       <form className="mb-8">
         <fieldset className="border-2 border-gray-300 rounded-md p-4 bg-gray-50">
-          <legend className="px-2 font-semibold text-lg">REST Client</legend>
+          <legend className="px-2 font-semibold text-lg">{t('rest_client')}</legend>
           <SelectMethod />
           <Input 
             id="path"
-            placeholder="Endpoint URL"/>
+            placeholder={t('endpoint_url')}
+          />
           <HeadersList />
           <div className="mb-4">
-            <Label htmlFor="code" className='mb-1'>Code</Label>
-            <Textarea placeholder="// Your code here" id="code"/>
+            <Label htmlFor="code" className='mb-1'>{t('code')}</Label>
+            <Textarea placeholder={t('code_placeholder')} id="code"/>
           </div>
           <div className="mb-2">
-            <Label htmlFor="body" className='mb-1'>Request Body</Label>
-            <Textarea placeholder='{"key": "value"}' id="body"/>
+            <Label htmlFor="body" className='mb-1'>{t('request_body')}</Label>
+            <Textarea placeholder={t('body_placeholder')} id="body"/>
           </div>
           <Button type="button" className="cursor-pointer">
-            Send Request
+            {t('send_request')}
           </Button>
         </fieldset>
       </form>
 
       <form>
         <fieldset className="border-2 border-gray-300 rounded-md p-4 bg-gray-50">
-          <legend className="px-2 font-semibold text-lg">Response </legend>
+          <legend className="px-2 font-semibold text-lg">{t('response')}</legend>
           <div className="mb-4">
-            <Label htmlFor="response-status" className='mb-1'>Status Code</Label>
+            <Label htmlFor="response-status" className='mb-1'>{t('status_code')}</Label>
             <Input id="response-status" readOnly className='bg-gray-100'/>
             <div className="mb-2">
-              <Label htmlFor="response-body" className='mb-1'>Response Body</Label>
-              <Textarea  id="response-body" readOnly className='bg-gray-100'/>
+              <Label htmlFor="response-body" className='mb-1'>{t('response_body')}</Label>
+              <Textarea id="response-body" readOnly className='bg-gray-100'/>
             </div>
           </div>
         </fieldset>
