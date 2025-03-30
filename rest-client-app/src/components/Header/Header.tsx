@@ -20,10 +20,7 @@ export function Header() {
     if (!event) return;
 
     startTransition(() => {
-      // @ts-expect-error -- TypeScript will validate that only known `params`
-      // are used in combination with a given `pathname`. Since the two will
-      // always match for the current route, we can skip runtime checks.
-      router.replace({ pathname, params }, { locale: event });
+      router.replace({ pathname, ...params }, { locale: event });
     });
   };
 
@@ -40,10 +37,18 @@ export function Header() {
           onValueChange={hanlderLanguage}
           disabled={isPending}
         >
-          <ToggleGroupItem variant="outline" value="en">
+          <ToggleGroupItem
+            variant="outline"
+            value="en"
+            className="cursor-pointer"
+          >
             EN
           </ToggleGroupItem>
-          <ToggleGroupItem variant="outline" value="ru">
+          <ToggleGroupItem
+            variant="outline"
+            value="ru"
+            className="cursor-pointer"
+          >
             RU
           </ToggleGroupItem>
         </ToggleGroup>
