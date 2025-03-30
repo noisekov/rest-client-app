@@ -23,6 +23,13 @@
     "send_request": "Отправить запрос",
     "response": "Ответ",
     "status_code": "Код состояния",
-    "response_body": "Тело ответа"
+    "response_body": "Тело ответа",
+    "select_method": "Выберите метод",
+    "methods_label": "МЕТОДЫ",
+    "headers": "Заголовки",
+    "add_header": "Добавить заголовок",
+    "key": "Ключ",
+    "value": "Значение",
+    "remove": "Удалить"
   }
 }
