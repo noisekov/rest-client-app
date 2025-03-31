@@ -1,7 +1,4 @@
-'use client';
-
-import { useState } from 'react';
-import { Methods } from './types';
+import { Methods } from '@/types/restAPI';
 import { selectClasses } from './classes';
 import { useTranslations } from 'next-intl';
 import {
@@ -14,17 +11,16 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-export function SelectMethod() {
+type SelectMethodProps = {
+  method: Methods;
+  onMethodChange: (method: Methods) => void;
+}
+
+export function SelectMethod({ method, onMethodChange }: SelectMethodProps) {
   const t = useTranslations('Restful');
 
-  const [method, setMethod] = useState<Methods>(Methods.GET);
-
-  const onChange = (value: Methods) => {
-    setMethod(value);
-  };
-
   return (
-    <Select onValueChange={onChange} defaultValue={method}>
+    <Select onValueChange={onMethodChange} defaultValue={method}>
       <SelectTrigger className={`${selectClasses[method]} w-[180px] mb-2`}>
         <SelectValue placeholder={t('select_method')} />
       </SelectTrigger>

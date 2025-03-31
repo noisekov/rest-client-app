@@ -1,46 +1,28 @@
-'use client';
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { Header } from '@/types/restAPI';
 
-type Header = {
-  id: string;
-  key: string;
-  value: string;
-};
+interface HeadersListProps {
+  headers: Header[];
+  onAddHeader: () => void;
+  onUpdateHeader: (id: string, field: keyof Header, value: string) => void;
+  onRemoveHeader: (id: string) => void;
+}
 
-export function HeadersList() {
+export function HeadersList({ 
+  headers, 
+  onAddHeader, 
+  onUpdateHeader, 
+  onRemoveHeader 
+}: HeadersListProps) {
   const t = useTranslations('Restful');
-
-  const [headers, setHeaders] = useState<Header[]>([
-    { id: crypto.randomUUID(), key: '', value: '' },
-  ]);
-
-  const addHeader = () => {
-    setHeaders((prev) => [
-      ...prev,
-      { id: crypto.randomUUID(), key: '', value: '' },
-    ]);
-  };
-
-  const updateHeader = (id: string, field: keyof Header, value: string) => {
-    setHeaders((prev) =>
-      prev.map((header) =>
-        header.id === id ? { ...header, [field]: value } : header
-      )
-    );
-  };
-
-  const removeHeader = (id: string) => {
-    setHeaders((prev) => prev.filter((header) => header.id !== id));
-  };
 
   return (
     <fieldset className="border p-4 rounded">
       <legend className="px-2 font-medium">{t('headers')}</legend>
-      <Button onClick={addHeader} type="button" className="cursor-pointer mb-2">
+      <Button onClick={onAddHeader} type="button" className="cursor-pointer mb-2">
         {t('add_header')}
       </Button>
       <div className="grid grid-cols-2 gap-2 mb-2 font-medium">
@@ -57,17 +39,17 @@ export function HeadersList() {
             type="text"
             value={header.key}
             placeholder={t('key')}
-            onChange={(e) => updateHeader(header.id, 'key', e.target.value)}
+            onChange={(e) => onUpdateHeader(header.id, 'key', e.target.value)}
           />
           <Input
             type="text"
             value={header.value}
-            onChange={(e) => updateHeader(header.id, 'value', e.target.value)}
+            onChange={(e) => onUpdateHeader(header.id, 'value', e.target.value)}
             placeholder={t('value')}
           />
           <Button
             variant="destructive"
-            onClick={() => removeHeader(header.id)}
+            onClick={() => onRemoveHeader(header.id)}
             type="button"
             className="cursor-pointer"
           >
