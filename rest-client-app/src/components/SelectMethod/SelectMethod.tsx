@@ -14,7 +14,7 @@ import {
 type SelectMethodProps = {
   method: Methods;
   onMethodChange: (method: Methods) => void;
-}
+};
 
 export function SelectMethod({ method, onMethodChange }: SelectMethodProps) {
   const t = useTranslations('Restful');

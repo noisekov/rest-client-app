@@ -14,11 +14,10 @@ export type Header = {
   value: string;
 };
 
-export type RequestState = {
+export type FormValues = {
   method: Methods;
   endpoint: string;
   headers: Header[];
-  script: string;
-  code: string;
-  body: string;
+  code?: string;
+  body?: string;
 };

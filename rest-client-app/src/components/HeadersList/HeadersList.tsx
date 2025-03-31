@@ -11,18 +11,22 @@ interface HeadersListProps {
   onRemoveHeader: (id: string) => void;
 }
 
-export function HeadersList({ 
-  headers, 
-  onAddHeader, 
-  onUpdateHeader, 
-  onRemoveHeader 
+export function HeadersList({
+  headers,
+  onAddHeader,
+  onUpdateHeader,
+  onRemoveHeader,
 }: HeadersListProps) {
   const t = useTranslations('Restful');
 
   return (
     <fieldset className="border p-4 rounded">
       <legend className="px-2 font-medium">{t('headers')}</legend>
-      <Button onClick={onAddHeader} type="button" className="cursor-pointer mb-2">
+      <Button
+        onClick={onAddHeader}
+        type="button"
+        className="cursor-pointer mb-2"
+      >
         {t('add_header')}
       </Button>
       <div className="grid grid-cols-2 gap-2 mb-2 font-medium">
@@ -35,7 +39,7 @@ export function HeadersList({
           className="grid gap-2 mb-2"
           style={{ gridTemplateColumns: '1fr 1fr 100px' }}
         >
-          < Input
+          <Input
             type="text"
             value={header.key}
             placeholder={t('key')}
