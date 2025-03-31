@@ -57,7 +57,6 @@ export default function RestAPI() {
   };
 
   function submitForm(data: FormValues) {
-    //e.preventDefault()
     console.log(data);
   }
 
