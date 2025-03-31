@@ -5,6 +5,10 @@ import { useTranslations } from 'next-intl';
 const History = () => {
   const t = useTranslations('History');
   const howManyRequests = 0;
+  const historyRequests = [
+    'GET https://api.example.com/resource/1',
+    'POST https://api.example.com/resource',
+  ];
 
   return (
     <div className="flex flex-col gap-4 text-center">
@@ -17,7 +21,14 @@ const History = () => {
           </Button>
         </>
       ) : (
-        <div>asd</div>
+        <>
+          <div>{t('requests')}</div>
+          <ul>
+            {historyRequests.map((request) => (
+              <li key={crypto.randomUUID()}>{request}</li>
+            ))}
+          </ul>
+        </>
       )}
     </div>
   );
