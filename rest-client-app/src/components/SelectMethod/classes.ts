@@ -1,4 +1,4 @@
-import { Methods } from './types';
+import { Methods } from '@/types/restAPI';
 
 export const selectClasses: Record<Methods, string> = {
   GET: 'text-green-600 bg-green-50',
