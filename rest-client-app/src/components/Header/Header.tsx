@@ -25,7 +25,7 @@ export function Header() {
   };
 
   return (
-    <header className="row-start-3 flex gap-[24px] flex-wrap items-center justify-between sticky top-0 h-[56px] border-b border-dashed border-[#cfcfcf] border-b-px">
+    <header className="row-start-3 flex gap-[24px] flex-wrap items-center justify-between sticky top-0 h-[56px] border-b border-dashed border-[#cfcfcf] border-b-px bg-[#fff]">
       <Link href="/">
         <Image priority src={icon} alt="Logo" width={40} height={40} />
       </Link>
