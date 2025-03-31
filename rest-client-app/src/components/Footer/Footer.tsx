@@ -1,13 +1,13 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import logoRS from "../../../public/rss-logo.svg";
-import logoGitHub from "../../../public/github-logo.png";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import logoRS from '../../../public/rss-logo.svg';
+import logoGitHub from '../../../public/github-logo.png';
 
 export function Footer() {
   return (
-    <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-between border-t border-dashed border-[#cfcfcf] border-t-px">
-      <div className="flex flex-col items-start">
+    <footer className="row-start-3 grid gap-[24px] grid-cols-3 grid-flow-row border-t border-dashed border-[#cfcfcf] border-t-px pt-[20px] pb-[20px]">
+      <div className="flex flex-row items-start flex-wrap">
         <Button variant="link">
           <Link
             className="flex items-center gap-[5px]"
@@ -42,11 +42,11 @@ export function Footer() {
         </Button>
       </div>
 
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground justify-self-center">
         <span>REST Client App © 2025</span>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 justify-self-end">
         <Link
           href="https://rs.school/courses/reactjs"
           target="_blank"

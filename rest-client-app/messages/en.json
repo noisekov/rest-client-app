@@ -31,5 +31,9 @@
     "key": "Key",
     "value": "Value",
     "remove": "Remove"
+  },
+  "History": {
+    "title": "You haven't executed any requests.",
+    "subtitle": "It's empty here. Try:"
   }
 }
