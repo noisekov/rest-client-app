@@ -11,5 +11,25 @@
   },
   "SignUp": {
     "title": "Sign Up"
+  },
+  "Restful": {
+    "title": "RestAPI",
+    "rest_client": "REST Client",
+    "endpoint_url": "Endpoint URL",
+    "code": "Code",
+    "code_placeholder": "// Your code here",
+    "request_body": "Request Body",
+    "body_placeholder": "{\n  \"key\": \"value\"\n}",
+    "send_request": "Send Request",
+    "response": "Response",
+    "status_code": "Status Code",
+    "response_body": "Response Body",
+    "select_method": "Select a method",
+    "methods_label": "METHODS",
+    "headers": "Headers",
+    "add_header": "Add header",
+    "key": "Key",
+    "value": "Value",
+    "remove": "Remove"
   }
 }

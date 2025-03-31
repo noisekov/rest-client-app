@@ -11,5 +11,25 @@
   },
   "SignUp": {
     "title": "Регистрация"
+  },
+  "Restful": {
+    "title": "RestAPI",
+    "rest_client": "REST Клиент",
+    "endpoint_url": "URL конечной точки",
+    "code": "Код",
+    "code_placeholder": "// Ваш код здесь",
+    "request_body": "Тело запроса",
+    "body_placeholder": "{\n  \"ключ\": \"значение\"\n}",
+    "send_request": "Отправить запрос",
+    "response": "Ответ",
+    "status_code": "Код состояния",
+    "response_body": "Тело ответа",
+    "select_method": "Выберите метод",
+    "methods_label": "МЕТОДЫ",
+    "headers": "Заголовки",
+    "add_header": "Добавить заголовок",
+    "key": "Ключ",
+    "value": "Значение",
+    "remove": "Удалить"
   }
 }
