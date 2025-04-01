@@ -24,7 +24,7 @@ export default function RestAPI() {
   const form = useForm<FormValues>({
     defaultValues: {
       method: Methods.GET,
-      endpoint: '',
+      endpoint: 'https://pokeapi.co/api/v2/ability/?limit=20&offset=20',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
       code: '',
       body: '',
@@ -56,8 +56,28 @@ export default function RestAPI() {
     );
   };
 
-  function submitForm(data: FormValues) {
-    console.log(data);
+  async function submitForm(data: FormValues) {
+    try {
+      const headers: Record<string, string> = {};
+      data.headers.forEach((header) => {
+        if (header.key && header.value) {
+          headers[header.key] = header.value;
+        }
+      });
+
+      const response = await fetch(data.endpoint, {
+        method: data.method,
+        headers: headers,
+        body: data.body,
+      });
+
+      const responseBody = await response.text();
+      
+      console.log(responseBody)
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
