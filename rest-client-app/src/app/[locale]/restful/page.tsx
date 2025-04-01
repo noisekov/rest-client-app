@@ -16,6 +16,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { FormValues, Header, Methods } from '@/types/restAPI';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function RestAPI() {
@@ -30,6 +31,8 @@ export default function RestAPI() {
       body: '',
     },
   });
+
+  const [response, setResponse] = useState<{status: number | null, body: string}>({ status: null, body: '' })
 
   const { control, handleSubmit, setValue, getValues } = form;
 
@@ -68,12 +71,17 @@ export default function RestAPI() {
       const response = await fetch(data.endpoint, {
         method: data.method,
         headers: headers,
-        body: data.body,
+      //  body: data.method !== Methods.GET ? data.body : '',
       });
 
       const responseBody = await response.text();
       
-      console.log(responseBody)
+      console.log(responseBody);
+
+      setResponse({
+        status: response.status,
+        body: responseBody,
+      });
 
     } catch (error) {
       console.log(error)
@@ -181,7 +189,7 @@ export default function RestAPI() {
       <div className="space-y-4">
         <div>
           <Label>{t('status_code')}</Label>
-          <Input id="response-status" readOnly className="bg-gray-100 mt-1" />
+          <Input id="response-status" readOnly className="bg-gray-100 mt-1" value={response.status ?? ''}/>
         </div>
         <div>
           <Label>{t('response_body')}</Label>
@@ -189,6 +197,7 @@ export default function RestAPI() {
             id="response-body"
             readOnly
             className="bg-gray-100 font-mono text-sm h-64 mt-1"
+            value={response.body}
           />
         </div>
       </div>
