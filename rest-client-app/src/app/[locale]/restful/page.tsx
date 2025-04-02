@@ -70,6 +70,15 @@ export default function RestAPI() {
         }
       });
 
+      if (!headers['Content-Type'] && data.body) {
+        try {
+          JSON.parse(data.body);
+          headers['Content-Type'] = 'application/json'; 
+        } catch {
+          headers['Content-Type'] = 'text/plain'; 
+        }
+      }      
+
       const fetchOptions: RequestInit = {
         method: data.method,
         headers: headers,
