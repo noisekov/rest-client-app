@@ -4,7 +4,12 @@
     "sign_up": "Sign Up"
   },
   "MainPage": {
-    "title": "Main Page"
+    "welcome": "Welcome",
+    "welcomeBack": "Welcome Back",
+    "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "history": "History",
+    "variables": "Variables"
   },
   "SignIn": {
     "title": "Sign In"
