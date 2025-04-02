@@ -61,18 +61,26 @@ export default function RestAPI() {
 
   async function submitForm(data: FormValues) {
     try {
+
       const headers: Record<string, string> = {};
+
       data.headers.forEach((header) => {
         if (header.key && header.value) {
           headers[header.key] = header.value;
         }
       });
 
-      const response = await fetch(data.endpoint, {
+      const fetchOptions: RequestInit = {
         method: data.method,
         headers: headers,
-      //  body: data.method !== Methods.GET ? data.body : '',
-      });
+      };
+  
+      if (!['GET', 'HEAD', 'OPTIONS'].includes(data.method) && data.body) {
+        fetchOptions.body = data.body;
+      }
+      //console.log(data)
+
+      const response = await fetch(data.endpoint, fetchOptions);
 
       const responseBody = await response.text();
       
