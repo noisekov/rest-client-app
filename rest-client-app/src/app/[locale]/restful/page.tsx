@@ -20,15 +20,18 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function RestAPI() {
+
+  console.log('документация по апи', "https://jsonplaceholder.typicode.com/guide/")
+
   const t = useTranslations('Restful');
 
   const form = useForm<FormValues>({
     defaultValues: {
       method: Methods.GET,
-      endpoint: 'https://pokeapi.co/api/v2/ability/?limit=20&offset=20',
+      endpoint: 'https://jsonplaceholder.typicode.com/posts',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
       code: '',
-      body: '',
+      body: JSON.stringify({'testKey': 'TestValue'}, null, 2),
     },
   });
 
@@ -73,9 +76,9 @@ export default function RestAPI() {
       if (!headers['Content-Type'] && data.body) {
         try {
           JSON.parse(data.body);
-          headers['Content-Type'] = 'application/json'; 
+          headers['Content-Type'] = 'application/json; charset=UTF-8'; 
         } catch {
-          headers['Content-Type'] = 'text/plain'; 
+          headers['Content-Type'] = 'text/plain; charset=UTF-8'; 
         }
       }      
 
@@ -87,12 +90,18 @@ export default function RestAPI() {
       if (!['GET', 'HEAD', 'OPTIONS'].includes(data.method) && data.body) {
         fetchOptions.body = data.body;
       }
-      //console.log(data)
 
       const response = await fetch(data.endpoint, fetchOptions);
 
-      const responseBody = await response.text();
-      
+      let responseBody;
+
+      try {
+        responseBody = await response.json();
+        responseBody = JSON.stringify(responseBody, null, 2);
+      } catch {
+         responseBody = await response.text();
+      }
+
       console.log(responseBody);
 
       setResponse({
