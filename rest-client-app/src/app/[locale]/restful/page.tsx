@@ -39,6 +39,8 @@ export default function RestAPI() {
 
   const { control, handleSubmit, setValue, getValues } = form;
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const addHeader = () => {
     setValue('headers', [
       ...getValues('headers'),
@@ -63,6 +65,9 @@ export default function RestAPI() {
   };
 
   async function submitForm(data: FormValues) {
+
+    setIsLoading(true)
+
     try {
 
       const headers: Record<string, string> = {};
@@ -109,8 +114,12 @@ export default function RestAPI() {
         body: responseBody,
       });
 
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error)
+    } 
+    finally{
+      setIsLoading(false)
     }
   }
 
@@ -207,6 +216,7 @@ export default function RestAPI() {
             <Button type="submit" className="cursor-pointer">
               {t('send_request')}
             </Button>
+            {isLoading && <div>идет загрузка</div>}
           </fieldset>
         </form>
       </Form>
