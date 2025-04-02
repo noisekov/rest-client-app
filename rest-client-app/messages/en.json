@@ -4,7 +4,12 @@
     "sign_up": "Sign Up"
   },
   "MainPage": {
-    "title": "Main Page"
+    "welcome": "Welcome",
+    "welcomeBack": "Welcome Back",
+    "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "history": "History",
+    "variables": "Variables"
   },
   "SignIn": {
     "title": "Sign In"
@@ -31,5 +36,10 @@
     "key": "Key",
     "value": "Value",
     "remove": "Remove"
+  },
+  "History": {
+    "title": "You haven't executed any requests.",
+    "subtitle": "It's empty here. Try:",
+    "requests": "History Requests"
   }
 }
