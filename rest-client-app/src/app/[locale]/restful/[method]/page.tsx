@@ -14,18 +14,26 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useRouter } from '@/i18n/navigation';
 import { FormValues, Header, Methods } from '@/types/restAPI';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function RestAPI() {
 
   const t = useTranslations('Restful');
+  const router = useRouter();
+  const params = useParams();
+  const paramsMethod = params.method
+
+  const [response, setResponse] = useState<{status: number | null, body: string}>({ status: null, body: '' })
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<FormValues>({
     defaultValues: {
-      method: Methods.GET,
+      method: Object.values(Methods).includes(paramsMethod as Methods) ? paramsMethod as Methods: Methods.GET,
       endpoint: 'https://jsonplaceholder.typicode.com/posts',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
       code: '',
@@ -33,11 +41,7 @@ export default function RestAPI() {
     },
   });
 
-  const [response, setResponse] = useState<{status: number | null, body: string}>({ status: null, body: '' })
-
   const { control, handleSubmit, setValue, getValues } = form;
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const addHeader = () => {
     setValue('headers', [
@@ -60,6 +64,11 @@ export default function RestAPI() {
       'headers',
       getValues('headers').filter((header) => header.id !== id)
     );
+  };
+
+  const handleMethodChange = (method: Methods) => {
+    console.log('method',method)
+    router.push(`/restful/${method}`);
   };
 
   async function submitForm(data: FormValues) {
@@ -137,7 +146,7 @@ export default function RestAPI() {
                   <FormControl>
                     <SelectMethod
                       method={field.value}
-                      onMethodChange={field.onChange}
+                      onMethodChange={(value) => {field.onChange(value);handleMethodChange(value); }}
                     />
                   </FormControl>
                   <FormMessage />
