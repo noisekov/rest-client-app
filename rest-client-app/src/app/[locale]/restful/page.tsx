@@ -120,7 +120,7 @@ export default function RestAPI() {
   }
 
   return (
-    <section className="max-w-4xl mx-auto p-6">
+    <section className="max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-6">{t('title')}</h2>
       <Form {...form}>
         <form className="mb-8" onSubmit={handleSubmit(submitForm)}>
