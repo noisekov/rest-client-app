@@ -21,8 +21,6 @@ import { useForm } from 'react-hook-form';
 
 export default function RestAPI() {
 
-  console.log('документация по апи', "https://jsonplaceholder.typicode.com/guide/")
-
   const t = useTranslations('Restful');
 
   const form = useForm<FormValues>({
@@ -107,8 +105,6 @@ export default function RestAPI() {
          responseBody = await response.text();
       }
 
-      console.log(responseBody);
-
       setResponse({
         status: response.status,
         body: responseBody,
@@ -116,7 +112,7 @@ export default function RestAPI() {
 
     } 
     catch (error) {
-      console.log(error)
+      console.error(error)
     } 
     finally{
       setIsLoading(false)
