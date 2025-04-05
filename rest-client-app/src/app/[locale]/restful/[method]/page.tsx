@@ -18,7 +18,7 @@ import { useRouter } from '@/i18n/navigation';
 import { FormValues, Header, Methods } from '@/types/restAPI';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function RestAPI() {
@@ -68,8 +68,40 @@ export default function RestAPI() {
   };
 
   const handleMethodChange = (method: Methods) => {
+   // router.replace(`/restful/${method}`, { scroll: false });
     router.push(`/restful/${method}`);
   };
+
+    useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    
+    const encodedUrl = searchParams.get('url');
+    if (encodedUrl) {
+      const url = Buffer.from(encodedUrl, 'base64').toString();
+      form.setValue('endpoint', url);
+    }
+  
+    const encodedBody = searchParams.get('body');
+    if (encodedBody) {
+      const body = Buffer.from(encodedBody, 'base64').toString();
+      form.setValue('body', body);
+    }
+  
+    const headers: Header[] = [];
+    searchParams.forEach((value, key) => {
+      if (!['url', 'body'].includes(key)) {
+        headers.push({
+          id: crypto.randomUUID(),
+          key,
+          value: decodeURIComponent(value)
+        });
+      }
+    });
+    
+    if (headers.length > 0) {
+      form.setValue('headers', headers);
+    }
+  }, []);
 
    function setURL(data: FormValues){
      const encodedUrl = Buffer.from(data.endpoint).toString('base64');
