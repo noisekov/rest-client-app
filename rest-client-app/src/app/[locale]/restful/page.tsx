@@ -16,22 +16,28 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { FormValues, Header, Methods } from '@/types/restAPI';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function RestAPI() {
+
   const t = useTranslations('Restful');
 
   const form = useForm<FormValues>({
     defaultValues: {
       method: Methods.GET,
-      endpoint: '',
+      endpoint: 'https://jsonplaceholder.typicode.com/posts',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
       code: '',
-      body: '',
+      body: JSON.stringify({'testKey': 'TestValue'}, null, 2),
     },
   });
 
+  const [response, setResponse] = useState<{status: number | null, body: string}>({ status: null, body: '' })
+
   const { control, handleSubmit, setValue, getValues } = form;
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const addHeader = () => {
     setValue('headers', [
@@ -56,8 +62,61 @@ export default function RestAPI() {
     );
   };
 
-  function submitForm(data: FormValues) {
-    console.log(data);
+  async function submitForm(data: FormValues) {
+
+    setIsLoading(true)
+
+    try {
+
+      const headers: Record<string, string> = {};
+
+      data.headers.forEach((header) => {
+        if (header.key && header.value) {
+          headers[header.key] = header.value;
+        }
+      });
+
+      if (!headers['Content-Type'] && data.body) {
+        try {
+          JSON.parse(data.body);
+          headers['Content-Type'] = 'application/json; charset=UTF-8'; 
+        } catch {
+          headers['Content-Type'] = 'text/plain; charset=UTF-8'; 
+        }
+      }      
+
+      const fetchOptions: RequestInit = {
+        method: data.method,
+        headers: headers,
+      };
+  
+      if (!['GET', 'HEAD', 'OPTIONS'].includes(data.method) && data.body) {
+        fetchOptions.body = data.body;
+      }
+
+      const response = await fetch(data.endpoint, fetchOptions);
+
+      let responseBody;
+
+      try {
+        responseBody = await response.json();
+        responseBody = JSON.stringify(responseBody, null, 2);
+      } catch {
+         responseBody = await response.text();
+      }
+
+      setResponse({
+        status: response.status,
+        body: responseBody,
+      });
+
+    } 
+    catch (error) {
+      console.error(error)
+    } 
+    finally{
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -153,6 +212,7 @@ export default function RestAPI() {
             <Button type="submit" className="cursor-pointer">
               {t('send_request')}
             </Button>
+            {isLoading && <div>идет загрузка</div>}
           </fieldset>
         </form>
       </Form>
@@ -161,7 +221,7 @@ export default function RestAPI() {
       <div className="space-y-4">
         <div>
           <Label>{t('status_code')}</Label>
-          <Input id="response-status" readOnly className="bg-gray-100 mt-1" />
+          <Input id="response-status" readOnly className="bg-gray-100 mt-1" value={response.status ?? ''}/>
         </div>
         <div>
           <Label>{t('response_body')}</Label>
@@ -169,6 +229,7 @@ export default function RestAPI() {
             id="response-body"
             readOnly
             className="bg-gray-100 font-mono text-sm h-64 mt-1"
+            value={response.body}
           />
         </div>
       </div>
