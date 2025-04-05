@@ -27,13 +27,14 @@ export default function RestAPI() {
   const router = useRouter();
   const params = useParams();
   const paramsMethod = params.method
+  const defaultMethod = Object.values(Methods).includes(paramsMethod as Methods) ? paramsMethod as Methods: Methods.GET
 
   const [response, setResponse] = useState<{status: number | null, body: string}>({ status: null, body: '' })
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<FormValues>({
     defaultValues: {
-      method: Object.values(Methods).includes(paramsMethod as Methods) ? paramsMethod as Methods: Methods.GET,
+      method: defaultMethod,
       endpoint: 'https://jsonplaceholder.typicode.com/posts',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
       code: '',
@@ -67,13 +68,28 @@ export default function RestAPI() {
   };
 
   const handleMethodChange = (method: Methods) => {
-    console.log('method',method)
     router.push(`/restful/${method}`);
   };
 
+   function setURL(data: FormValues){
+     const encodedUrl = Buffer.from(data.endpoint).toString('base64');
+     const encodedBody = data.body ? Buffer.from(data.body).toString('base64') : '';
+     const encodeHeaders = new URLSearchParams(
+       data.headers
+       .filter(header => header.key && header.value)
+       .map(({ key, value }) => [key, encodeURIComponent(value)])
+     ).toString();
+     const newUrl = `/restful/${data.method}?` +
+      `url=${encodedUrl}` +
+      (encodedBody ? `&body=${encodedBody}` : '') +
+      (encodeHeaders ? `&${encodeHeaders}` : '');
+      router.replace(newUrl, { scroll: false });
+   }
+ 
   async function submitForm(data: FormValues) {
 
     setIsLoading(true)
+    setURL(data);
 
     try {
 
