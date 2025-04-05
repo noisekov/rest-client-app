@@ -13,22 +13,32 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, getIdToken } from 'firebase/auth';
 import { auth } from '@/firebase';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
+import { useTranslations } from 'next-intl';
 
-const FormSchema = z.object({
-  email: z.string().email().min(5, {
-    message: 'Email must be at least 5 characters.',
-  }),
-  password: z.string().min(8),
-});
+const passwordRegex =
+  /^(?=.*[\p{L}])(?=.*\d)(?=.*[^\w\s])[\p{L}\d\p{P}\p{S}]{8,}$/u;
 
 export function LoginForm() {
+  const t = useTranslations('SignIn');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  const FormSchema = z.object({
+    email: z.string().email({
+      message: t('email_error'),
+    }),
+    password: z
+      .string()
+      .min(8, { message: t('password_description') })
+      .regex(passwordRegex, {
+        message: t('password_error'),
+      }),
+  });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -46,6 +56,14 @@ export function LoginForm() {
         password
       );
       const user = userCredential.user;
+
+      const token = getIdToken(user);
+
+      await fetch('/api/set-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
 
       if (user) {
         router.push('/');
@@ -84,9 +102,9 @@ export function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('email')}</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="abc@gmail.com" {...field} />
+                  <Input placeholder="abc@gmail.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -98,7 +116,7 @@ export function LoginForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t('password')}</FormLabel>
                 <FormControl>
                   <Input type="password" placeholder="********" {...field} />
                 </FormControl>
@@ -107,16 +125,19 @@ export function LoginForm() {
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit">{t('submit')}</Button>
         </form>
       </Form>
 
       <div className="mt-[20px] text-[#b92025]">{error}</div>
 
       <div className="mt-[20px]">
-        Not Registered Yet?{' '}
-        <Link href="/signup" className="hover:underline cursor-pointer">
-          Create an account
+        {t('subtitle')}{' '}
+        <Link
+          href="/signup"
+          className="hover:underline cursor-pointer text-[#b92025]"
+        >
+          {t('subtitle_link')}
         </Link>
       </div>
     </div>
