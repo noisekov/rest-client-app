@@ -26,6 +26,7 @@ const passwordRegex =
 export function LoginForm() {
   const t = useTranslations('SignIn');
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const FormSchema = z.object({
@@ -85,8 +86,16 @@ export function LoginForm() {
     }
   };
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    loginWithEmailAndPassword(data.email, data.password);
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    setIsSubmitting(true);
+
+    try {
+      await loginWithEmailAndPassword(data.email, data.password);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -124,8 +133,12 @@ export function LoginForm() {
             )}
           />
 
-          <Button type="submit" className="cursor-pointer">
-            {t('submit')}
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="cursor-pointer"
+          >
+            {isSubmitting ? t('loading') : t('submit')}
           </Button>
         </form>
       </Form>
