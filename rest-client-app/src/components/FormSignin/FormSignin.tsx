@@ -86,11 +86,11 @@ export function LoginForm() {
     }
   };
 
-  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
     setIsSubmitting(true);
 
     try {
-      await loginWithEmailAndPassword(data.email, data.password);
+      await loginWithEmailAndPassword(email, password);
     } catch (err) {
       console.error(err);
     } finally {

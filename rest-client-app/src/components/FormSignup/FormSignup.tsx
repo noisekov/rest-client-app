@@ -91,14 +91,14 @@ export function UserForm() {
     }
   };
 
-  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async ({
+    username,
+    email,
+    password,
+  }: z.infer<typeof FormSchema>) => {
     setIsSubmitting(true);
     try {
-      await registerWithEmailAndPassword(
-        data.username,
-        data.email,
-        data.password
-      );
+      await registerWithEmailAndPassword(username, email, password);
       form.reset();
       router.push('/');
     } catch (err) {
