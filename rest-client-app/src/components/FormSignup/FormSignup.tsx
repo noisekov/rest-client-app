@@ -158,7 +158,11 @@ export function UserForm() {
             )}
           />
 
-          <Button type="submit" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="cursor-pointer"
+          >
             {isSubmitting ? t('loading') : t('submit')}
           </Button>
         </form>

@@ -124,7 +124,9 @@ export function LoginForm() {
             )}
           />
 
-          <Button type="submit">{t('submit')}</Button>
+          <Button type="submit" className="cursor-pointer">
+            {t('submit')}
+          </Button>
         </form>
       </Form>
 

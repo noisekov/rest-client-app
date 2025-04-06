@@ -67,7 +67,12 @@ export function Header() {
 
         {user ? (
           <>
-            <Button variant="outline" size="lg" onClick={handleLogout}>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleLogout}
+              className="cursor-pointer"
+            >
               {t('sign_out')}
             </Button>
           </>
