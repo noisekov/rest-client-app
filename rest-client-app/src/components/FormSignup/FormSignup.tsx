@@ -165,7 +165,7 @@ export function UserForm() {
       </Form>
 
       <div className="mt-[20px]">
-        {t('subtitle')}{' '}
+        {`${t('subtitle')} `}
         <Link
           href="/signin"
           className="hover:underline cursor-pointer text-[#b92025]"

@@ -77,11 +77,10 @@ export function LoginForm() {
           setError(
             'Invalid credentials provided. Please check your input and try again.'
           );
-        } else {
-          setError(error.message);
+
+          return;
         }
-      } else {
-        setError('An unknown error occurred.');
+        setError(error.message);
       }
     }
   };
@@ -132,7 +131,7 @@ export function LoginForm() {
       <div className="mt-[20px] text-[#b92025]">{error}</div>
 
       <div className="mt-[20px]">
-        {t('subtitle')}{' '}
+        {`${t('subtitle')} `}
         <Link
           href="/signup"
           className="hover:underline cursor-pointer text-[#b92025]"
