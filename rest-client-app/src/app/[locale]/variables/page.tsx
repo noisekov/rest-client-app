@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/store/authStore';
 import { useVariableStore } from '@/store/variableStore';
@@ -28,7 +29,7 @@ const formSchema = z
 export default function Variables() {
   const t = useTranslations('Variables');
   const { user } = useAuthStore();
-  const { variables, addVariable, loadVariables, deleteVariable } =
+  const { variables, addVariable, loadVariables, deleteVariable, loading } =
     useVariableStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -102,7 +103,13 @@ export default function Variables() {
       <div className="mt-6 w-[100%]">
         <h2 className="text-xl font-semibold mb-3">{t('subtitle')}</h2>
 
-        {Object.entries(variables).length === 0 ? (
+        {loading ? (
+          <div className="flex flex-col space-y-3">
+            <Skeleton className="h-[50px] rounded" />
+            <Skeleton className="h-[50px] rounded" />
+            <Skeleton className="h-[50px] rounded" />
+          </div>
+        ) : Object.entries(variables).length === 0 ? (
           <p>{t('notFound')}</p>
         ) : (
           <ul className="space-y-2">
