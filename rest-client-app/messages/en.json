@@ -66,8 +66,12 @@
   },
   "Variables": {
     "title": "Variables",
+    "subtitle": "Your Variables:",
     "key": "variable name",
     "value": "value",
-    "add": "Add"
+    "add": "Add",
+    "variableExists": "Variable with the name \"{key}\" already exists. Please use a different name.",
+    "notFound": "No variables yet",
+    "delete": "Delete"
   }
 }
