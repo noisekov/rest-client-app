@@ -4,6 +4,7 @@ type Variables = Record<string, string>;
 
 interface VariableStore {
   variables: Variables;
+  loading: boolean;
   loadVariables: (uid: string) => void;
   addVariable: (uid: string, key: string, value: string) => void;
   deleteVariable: (uid: string, key: string) => void;
@@ -11,12 +12,13 @@ interface VariableStore {
 
 export const useVariableStore = create<VariableStore>((set, get) => ({
   variables: {},
+  loading: true,
 
   loadVariables: (uid) => {
     const stored = localStorage.getItem(`variables_${uid}`);
     const parsed = stored ? JSON.parse(stored) : {};
 
-    set({ variables: parsed });
+    set({ variables: parsed, loading: false });
   },
 
   addVariable: (uid, key, value) => {
