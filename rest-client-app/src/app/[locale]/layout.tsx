@@ -46,7 +46,6 @@ export default async function RootLayout({
             <Header />
 
             <main className="flex flex-1 overflow-y-auto px-4 py-6 font-[family-name:var(--font-geist-sans)]">
-              {/* <div className="max-w-7xl mx-auto w-full px-4">{children}</div> */}
               {children}
             </main>
             <Toaster />
