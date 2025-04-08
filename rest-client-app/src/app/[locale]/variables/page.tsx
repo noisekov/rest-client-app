@@ -59,82 +59,85 @@ export default function Variables() {
   };
 
   return (
-    <>
-      <div className="text-center text-[3rem] leading-[1.167]">
-        {t('title')}
-      </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-wrap items-center gap-5 pt-[20px]"
-        >
-          <FormField
-            control={form.control}
-            name="key"
-            render={({ field }) => (
-              <FormItem className="relative">
-                <FormControl>
-                  <Input placeholder={t('key')} {...field} />
-                </FormControl>
-                <FormMessage className="absolute top-[50px]" />
-              </FormItem>
-            )}
-          />
+    <div className="flex items-start justify-center max-w-7xl mx-auto w-full px-4">
+      <div className="flex flex-col gap-4 max-w-2xl w-full">
+        <div className="text-center text-[3rem] leading-[1.167]">
+          {t('title')}
+        </div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex items-center justify-center gap-[20px]"
+          >
+            <FormField
+              control={form.control}
+              name="key"
+              render={({ field }) => (
+                <FormItem className="relative">
+                  <FormControl>
+                    <Input placeholder={t('key')} {...field} />
+                  </FormControl>
+                  <FormMessage className="absolute top-[50px]" />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="value"
-            render={({ field }) => (
-              <FormItem className="relative">
-                <FormControl>
-                  <Input placeholder={t('value')} {...field} />
-                </FormControl>
-                <FormMessage className="absolute top-[50px]" />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="value"
+              render={({ field }) => (
+                <FormItem className="relative">
+                  <FormControl>
+                    <Input placeholder={t('value')} {...field} />
+                  </FormControl>
+                  <FormMessage className="absolute top-[50px]" />
+                </FormItem>
+              )}
+            />
 
-          <Button type="submit" className="cursor-pointer">
-            {t('add')}
-          </Button>
-        </form>
-      </Form>
+            <Button type="submit" className="cursor-pointer">
+              {t('add')}
+            </Button>
+          </form>
+        </Form>
 
-      <div className="mt-6 w-[100%]">
-        <h2 className="text-xl font-semibold mb-3">{t('subtitle')}</h2>
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold mb-3">{t('subtitle')}</h2>
 
-        {loading ? (
-          <div className="flex flex-col space-y-3">
-            <Skeleton className="h-[50px] rounded" />
-            <Skeleton className="h-[50px] rounded" />
-            <Skeleton className="h-[50px] rounded" />
-          </div>
-        ) : Object.entries(variables).length === 0 ? (
-          <p>{t('notFound')}</p>
-        ) : (
-          <ul className="space-y-2">
-            {Object.entries(variables).map(([key, value]) => (
-              <li
-                key={key}
-                className="flex items-center justify-between border p-2 rounded"
-              >
-                <div>
-                  <span className="font-semibold">{key}</span>: {value}
-                </div>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="cursor-pointer"
-                  onClick={() => user && deleteVariable(user.uid, key)}
+          {loading ? (
+            <div className="flex flex-col space-y-3">
+              <Skeleton className="h-[50px] rounded" />
+              <Skeleton className="h-[50px] rounded" />
+              <Skeleton className="h-[50px] rounded" />
+            </div>
+          ) : Object.entries(variables).length === 0 ? (
+            <p>{t('notFound')}</p>
+          ) : (
+            <ul className="space-y-2">
+              {Object.entries(variables).map(([key, value]) => (
+                <li
+                  key={key}
+                  className="flex items-center justify-between border p-2 rounded"
                 >
-                  {t('delete')}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        )}
+                  <div className="flex gap-[20px]">
+                    <span className="font-semibold">{key} :</span>
+                    <span>{value}</span>
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer"
+                    onClick={() => user && deleteVariable(user.uid, key)}
+                  >
+                    {t('delete')}
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
-    </>
+    </div>
   );
 }

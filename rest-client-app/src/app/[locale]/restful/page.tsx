@@ -20,7 +20,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function RestAPI() {
-
   const t = useTranslations('Restful');
 
   const form = useForm<FormValues>({
@@ -29,11 +28,14 @@ export default function RestAPI() {
       endpoint: 'https://jsonplaceholder.typicode.com/posts',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
       code: '',
-      body: JSON.stringify({'testKey': 'TestValue'}, null, 2),
+      body: JSON.stringify({ testKey: 'TestValue' }, null, 2),
     },
   });
 
-  const [response, setResponse] = useState<{status: number | null, body: string}>({ status: null, body: '' })
+  const [response, setResponse] = useState<{
+    status: number | null;
+    body: string;
+  }>({ status: null, body: '' });
 
   const { control, handleSubmit, setValue, getValues } = form;
 
@@ -63,11 +65,9 @@ export default function RestAPI() {
   };
 
   async function submitForm(data: FormValues) {
-
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-
       const headers: Record<string, string> = {};
 
       data.headers.forEach((header) => {
@@ -79,17 +79,17 @@ export default function RestAPI() {
       if (!headers['Content-Type'] && data.body) {
         try {
           JSON.parse(data.body);
-          headers['Content-Type'] = 'application/json; charset=UTF-8'; 
+          headers['Content-Type'] = 'application/json; charset=UTF-8';
         } catch {
-          headers['Content-Type'] = 'text/plain; charset=UTF-8'; 
+          headers['Content-Type'] = 'text/plain; charset=UTF-8';
         }
-      }      
+      }
 
       const fetchOptions: RequestInit = {
         method: data.method,
         headers: headers,
       };
-  
+
       if (!['GET', 'HEAD', 'OPTIONS'].includes(data.method) && data.body) {
         fetchOptions.body = data.body;
       }
@@ -102,137 +102,141 @@ export default function RestAPI() {
         responseBody = await response.json();
         responseBody = JSON.stringify(responseBody, null, 2);
       } catch {
-         responseBody = await response.text();
+        responseBody = await response.text();
       }
 
       setResponse({
         status: response.status,
         body: responseBody,
       });
-
-    } 
-    catch (error) {
-      console.error(error)
-    } 
-    finally{
-      setIsLoading(false)
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
-    <section className="max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">{t('title')}</h2>
-      <Form {...form}>
-        <form className="mb-8" onSubmit={handleSubmit(submitForm)}>
-          <fieldset className="border-2 border-gray-300 rounded-md p-4 bg-gray-50">
-            <legend className="px-2 font-semibold text-lg">
-              {t('rest_client')}
-            </legend>
+    <div className="flex items-center justify-center max-w-7xl mx-auto w-full px-4">
+      <section className="max-w-4xl w-full px-4">
+        <h2 className="text-2xl font-bold mb-6">{t('title')}</h2>
+        <Form {...form}>
+          <form className="mb-8" onSubmit={handleSubmit(submitForm)}>
+            <fieldset className="flex flex-col gap-5 border-2 border-gray-300 rounded-md p-4 bg-gray-50">
+              <legend className="px-2 font-semibold text-lg">
+                {t('rest_client')}
+              </legend>
 
-            <FormField
-              control={control}
-              name="method"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <SelectMethod
-                      method={field.value}
-                      onMethodChange={field.onChange}
+              <FormField
+                control={control}
+                name="method"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <SelectMethod
+                        method={field.value}
+                        onMethodChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="endpoint"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('endpoint_url')}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t('endpoint_url')} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={control}
+                name="headers"
+                render={() => (
+                  <FormItem>
+                    <HeadersList
+                      headers={getValues('headers')}
+                      onAddHeader={addHeader}
+                      onUpdateHeader={updateHeader}
+                      onRemoveHeader={removeHeader}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="endpoint"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('endpoint_url')}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t('endpoint_url')} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={control}
-              name="headers"
-              render={() => (
-                <FormItem>
-                  <HeadersList
-                    headers={getValues('headers')}
-                    onAddHeader={addHeader}
-                    onUpdateHeader={updateHeader}
-                    onRemoveHeader={removeHeader}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="mb-4">
-              <FormField
-                control={control}
-                name="code"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('code')}</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={t('code_placeholder')}
-                        {...field}
-                      />
-                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="mb-2">
-              <FormField
-                control={control}
-                name="body"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('request_body')}</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={t.raw('body_placeholder')}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Button type="submit" className="cursor-pointer">
-              {t('send_request')}
-            </Button>
-            {isLoading && <div>идет загрузка</div>}
-          </fieldset>
-        </form>
-      </Form>
+              <div className="mb-4">
+                <FormField
+                  control={control}
+                  name="code"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('code')}</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder={t('code_placeholder')}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="mb-2">
+                <FormField
+                  control={control}
+                  name="body"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('request_body')}</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder={t.raw('body_placeholder')}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button type="submit" className="cursor-pointer max-w-[150px]">
+                {t('send_request')}
+              </Button>
+              {isLoading && <div>идет загрузка</div>}
+            </fieldset>
+          </form>
+        </Form>
 
-      <h3 className="px-2 font-semibold text-lg mb-4">{t('response')}</h3>
-      <div className="space-y-4">
-        <div>
-          <Label>{t('status_code')}</Label>
-          <Input id="response-status" readOnly className="bg-gray-100 mt-1" value={response.status ?? ''}/>
+        <h3 className="px-2 font-semibold text-lg mb-4">{t('response')}</h3>
+        <div className="space-y-4">
+          <div>
+            <Label>{t('status_code')}</Label>
+            <Input
+              id="response-status"
+              readOnly
+              className="bg-gray-100 mt-1"
+              value={response.status ?? ''}
+            />
+          </div>
+          <div>
+            <Label>{t('response_body')}</Label>
+            <Textarea
+              id="response-body"
+              readOnly
+              className="bg-gray-100 font-mono text-sm h-64 mt-1"
+              value={response.body}
+            />
+          </div>
         </div>
-        <div>
-          <Label>{t('response_body')}</Label>
-          <Textarea
-            id="response-body"
-            readOnly
-            className="bg-gray-100 font-mono text-sm h-64 mt-1"
-            value={response.body}
-          />
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

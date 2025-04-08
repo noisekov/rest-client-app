@@ -39,17 +39,18 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased mx-auto max-w-[1536px] px-[1rem]`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col`}
       >
         <NextIntlClientProvider>
           <AuthProvider>
             <Header />
-            <div className="flex items-center justify-center min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
-              <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-                {children}
-              </main>
-              <Toaster />
-            </div>
+
+            <main className="flex flex-1 overflow-y-auto px-4 py-6 font-[family-name:var(--font-geist-sans)]">
+              {/* <div className="max-w-7xl mx-auto w-full px-4">{children}</div> */}
+              {children}
+            </main>
+            <Toaster />
+
             <Footer />
           </AuthProvider>
         </NextIntlClientProvider>

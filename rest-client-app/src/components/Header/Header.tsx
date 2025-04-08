@@ -37,55 +37,57 @@ export function Header() {
   };
 
   return (
-    <header className="row-start-3 flex gap-[24px] flex-wrap items-center justify-between sticky top-0 h-[56px] border-b border-dashed border-[#cfcfcf] border-b-px bg-[#fff]">
-      <Link href="/">
-        <Image priority src={icon} alt="Logo" width={40} height={40} />
-      </Link>
-      <div className="flex gap-[24px]">
-        <ToggleGroup
-          type="single"
-          size="lg"
-          defaultValue={locale}
-          onValueChange={hanlderLanguage}
-          disabled={isPending}
-        >
-          <ToggleGroupItem
-            variant="outline"
-            value="en"
-            className="cursor-pointer"
+    <header className="sticky top-0">
+      <div className="max-w-7xl mx-auto w-full px-4 row-start-3 flex gap-[24px] flex-wrap items-center justify-between h-[56px] border-b border-dashed border-[#cfcfcf] border-b-px bg-[#ffffff99]">
+        <Link href="/">
+          <Image priority src={icon} alt="Logo" width={40} height={40} />
+        </Link>
+        <div className="flex gap-[24px]">
+          <ToggleGroup
+            type="single"
+            size="lg"
+            defaultValue={locale}
+            onValueChange={hanlderLanguage}
+            disabled={isPending}
           >
-            EN
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            variant="outline"
-            value="ru"
-            className="cursor-pointer"
-          >
-            RU
-          </ToggleGroupItem>
-        </ToggleGroup>
-
-        {user ? (
-          <>
-            <Button
+            <ToggleGroupItem
               variant="outline"
-              size="lg"
-              onClick={handleLogout}
+              value="en"
               className="cursor-pointer"
             >
-              {t('sign_out')}
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button variant="outline" size="lg" asChild>
-              <Link href="/signin">{t('sign_in')}</Link>
-            </Button>
-            <Button size="lg" asChild>
-              <Link href="/signup">{t('sign_up')}</Link>
-            </Button>
-          </>
-        )}
+              EN
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              variant="outline"
+              value="ru"
+              className="cursor-pointer"
+            >
+              RU
+            </ToggleGroupItem>
+          </ToggleGroup>
+
+          {user ? (
+            <>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={handleLogout}
+                className="cursor-pointer"
+              >
+                {t('sign_out')}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" size="lg" asChild>
+                <Link href="/signin">{t('sign_in')}</Link>
+              </Button>
+              <Button size="lg" asChild>
+                <Link href="/signup">{t('sign_up')}</Link>
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );
