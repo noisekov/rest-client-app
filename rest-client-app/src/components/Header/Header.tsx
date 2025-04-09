@@ -7,6 +7,9 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useTransition } from 'react';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
+import { auth } from '@/firebase';
+import { signOut } from 'firebase/auth';
+import { useAuthStore } from '@/store/authStore';
 
 export function Header() {
   const router = useRouter();
@@ -15,6 +18,7 @@ export function Header() {
   const [isPending, startTransition] = useTransition();
   const t = useTranslations('Header');
   const locale = useLocale();
+  const { user } = useAuthStore();
 
   const hanlderLanguage = (event: 'en' | 'ru') => {
     if (!event) return;
@@ -22,6 +26,14 @@ export function Header() {
     startTransition(() => {
       router.replace({ pathname, ...params }, { locale: event });
     });
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+
+    await fetch('/api/logout', { method: 'POST' });
+
+    router.push('/');
   };
 
   return (
@@ -52,12 +64,28 @@ export function Header() {
             RU
           </ToggleGroupItem>
         </ToggleGroup>
-        <Button variant="outline" size="lg" asChild>
-          <Link href="/signin">{t('sign_in')}</Link>
-        </Button>
-        <Button size="lg" asChild>
-          <Link href="/signup">{t('sign_up')}</Link>
-        </Button>
+
+        {user ? (
+          <>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleLogout}
+              className="cursor-pointer"
+            >
+              {t('sign_out')}
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/signin">{t('sign_in')}</Link>
+            </Button>
+            <Button size="lg" asChild>
+              <Link href="/signup">{t('sign_up')}</Link>
+            </Button>
+          </>
+        )}
       </div>
     </header>
   );

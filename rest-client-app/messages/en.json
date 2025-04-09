@@ -1,7 +1,8 @@
 {
   "Header": {
     "sign_in": "Sign In",
-    "sign_up": "Sign Up"
+    "sign_up": "Sign Up",
+    "sign_out": "Sign Out"
   },
   "MainPage": {
     "welcome": "Welcome",
@@ -12,10 +13,31 @@
     "variables": "Variables"
   },
   "SignIn": {
-    "title": "Sign In"
+    "title": "Sign In",
+    "email": "Email",
+    "email_error": "Please enter a valid email address with at least 5 characters",
+    "password": "Password",
+    "submit": "Submit",
+    "loading": "Loading",
+    "subtitle": "Not Registered Yet?",
+    "subtitle_link": "Create an account",
+    "password_description": "Must be at least 8 characters long, and include: one letter one number one special character",
+    "password_error": "Password must contain at least one letter, one number, and one special character"
   },
   "SignUp": {
-    "title": "Sign Up"
+    "title": "Sign Up",
+    "email": "Email",
+    "email_error": "Please enter a valid email address with at least 5 characters",
+    "username": "Username",
+    "username_error": "Username must be at least 2 characters",
+    "info": "This is your public display name",
+    "password": "Password",
+    "submit": "Submit",
+    "loading": "Loading",
+    "subtitle": "Already have an account?",
+    "subtitle_link": "Log in",
+    "password_description": "Must be at least 8 characters long, and include: one letter one number one special character",
+    "password_error": "Password must contain at least one letter, one number, and one special character"
   },
   "Restful": {
     "title": "RestAPI",
