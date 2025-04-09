@@ -207,10 +207,13 @@ export default function RestAPI() {
                   )}
                 />
               </div>
-              <Button type="submit" className="cursor-pointer max-w-[150px]">
-                {t('send_request')}
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="cursor-pointer max-w-[150px]"
+              >
+                {isLoading ? t('loading') : t('send_request')}
               </Button>
-              {isLoading && <div>идет загрузка</div>}
             </fieldset>
           </form>
         </Form>

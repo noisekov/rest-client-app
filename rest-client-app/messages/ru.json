@@ -48,6 +48,7 @@
     "request_body": "Тело запроса",
     "body_placeholder": "{\n  \"ключ\": \"значение\"\n}",
     "send_request": "Отправить запрос",
+    "loading": "Загружаем",
     "response": "Ответ",
     "status_code": "Код состояния",
     "response_body": "Тело ответа",
