@@ -101,7 +101,7 @@ export default function Variables() {
           </form>
         </Form>
 
-        <div className="mt-6">
+        <div className="mt-20">
           <h2 className="text-xl font-semibold mb-3">{t('subtitle')}</h2>
 
           {loading ? (
