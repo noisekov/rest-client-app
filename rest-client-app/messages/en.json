@@ -48,6 +48,7 @@
     "request_body": "Request Body",
     "body_placeholder": "{\n  \"key\": \"value\"\n}",
     "send_request": "Send Request",
+    "loading": "Loading",
     "response": "Response",
     "status_code": "Status Code",
     "response_body": "Response Body",
@@ -63,5 +64,15 @@
     "title": "You haven't executed any requests.",
     "subtitle": "It's empty here. Try:",
     "requests": "History Requests"
+  },
+  "Variables": {
+    "title": "Variables",
+    "subtitle": "Your Variables:",
+    "key": "variable name",
+    "value": "value",
+    "add": "Add",
+    "variableExists": "Variable with the name \"{key}\" already exists. Please use a different name.",
+    "notFound": "No variables yet",
+    "delete": "Delete"
   }
 }
