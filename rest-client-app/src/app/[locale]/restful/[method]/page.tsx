@@ -19,9 +19,16 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useVariableStore } from '@/store/variableStore';
+import { useAuthStore } from '@/store/authStore';
+import { replaceVariables } from '@/utils/replaceVariables';
 
 export default function RestAPI() {
   const t = useTranslations('Restful');
+
+  const { user } = useAuthStore();
+  const { variables, loadVariables } = useVariableStore();
+
   const params = useParams();
   const paramsMethod = params.method;
   const defaultMethod = Object.values(Methods).includes(paramsMethod as Methods)
@@ -47,6 +54,12 @@ export default function RestAPI() {
   const { control, handleSubmit, setValue, getValues } = form;
 
   const { watch } = form;
+
+  useEffect(() => {
+    if (user?.uid) {
+      loadVariables(user.uid);
+    }
+  }, [user?.uid, loadVariables]);
 
   const addHeader = () => {
     setValue('headers', [
@@ -132,12 +145,28 @@ export default function RestAPI() {
 
   async function submitForm(data: FormValues) {
     setIsLoading(true);
-    setURL(data);
+
+    const resolvedEndpoint = replaceVariables(data.endpoint, variables);
+    const resolvedBody = data.body
+      ? replaceVariables(data.body, variables)
+      : '';
+    const resolvedHeaders = data.headers.map((header) => ({
+      ...header,
+      key: replaceVariables(header.key, variables),
+      value: replaceVariables(header.value, variables),
+    }));
+
+    setURL({
+      ...data,
+      endpoint: resolvedEndpoint,
+      body: resolvedBody,
+      headers: resolvedHeaders,
+    });
 
     try {
       const headers: Record<string, string> = {};
 
-      data.headers.forEach((header) => {
+      resolvedHeaders.forEach((header) => {
         if (header.key && header.value) {
           headers[header.key] = header.value;
         }
@@ -157,11 +186,11 @@ export default function RestAPI() {
         headers: headers,
       };
 
-      if (!['GET', 'HEAD', 'OPTIONS'].includes(data.method) && data.body) {
-        fetchOptions.body = data.body;
+      if (!['GET', 'HEAD', 'OPTIONS'].includes(data.method) && resolvedBody) {
+        fetchOptions.body = resolvedBody;
       }
 
-      const response = await fetch(data.endpoint, fetchOptions);
+      const response = await fetch(resolvedEndpoint, fetchOptions);
 
       let responseBody;
 
