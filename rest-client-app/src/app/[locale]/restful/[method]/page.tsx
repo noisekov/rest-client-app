@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { FormValues, Header, Methods } from '@/types/restAPI';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useVariableStore } from '@/store/variableStore';
 import { useAuthStore } from '@/store/authStore';
@@ -28,6 +28,7 @@ export default function RestAPI() {
 
   const { user } = useAuthStore();
   const { variables, loadVariables } = useVariableStore();
+  const isSubmittingRef = useRef(false);
 
   const params = useParams();
   const paramsMethod = params.method;
@@ -118,7 +119,11 @@ export default function RestAPI() {
 
   useEffect(() => {
     const subscription = watch((data) => {
-      setURL(data as FormValues);
+      if (!isSubmittingRef.current) {
+        setURL(data as FormValues);
+      } else {
+        isSubmittingRef.current = false;
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -140,6 +145,7 @@ export default function RestAPI() {
       `url=${encodedUrl}` +
       (encodedBody ? `&body=${encodedBody}` : '') +
       (encodeHeaders ? `&${encodeHeaders}` : '');
+
     window.history.replaceState(null, '', newUrl);
   }
 
@@ -155,6 +161,8 @@ export default function RestAPI() {
       key: replaceVariables(header.key, variables),
       value: replaceVariables(header.value, variables),
     }));
+
+    isSubmittingRef.current = true;
 
     setURL({
       ...data,
