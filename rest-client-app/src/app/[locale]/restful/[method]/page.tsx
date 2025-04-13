@@ -37,10 +37,10 @@ export default function RestAPI() {
   const form = useForm<FormValues>({
     defaultValues: {
       method: defaultMethod,
-      endpoint: 'https://jsonplaceholder.typicode.com/posts',
+      endpoint: '',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
       code: '',
-      body: JSON.stringify({ testKey: 'TestValue' }, null, 2),
+      body: ''
     },
   });
 
