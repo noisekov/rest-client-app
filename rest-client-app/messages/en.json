@@ -58,7 +58,8 @@
     "add_header": "Add header",
     "key": "Key",
     "value": "Value",
-    "remove": "Remove"
+    "remove": "Remove",
+    "variableNotFound": "Variable {key} not found"
   },
   "History": {
     "title": "You haven't executed any requests.",

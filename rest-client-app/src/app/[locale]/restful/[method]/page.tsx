@@ -22,6 +22,7 @@ import { useForm } from 'react-hook-form';
 import { useVariableStore } from '@/store/variableStore';
 import { useAuthStore } from '@/store/authStore';
 import { replaceVariables } from '@/utils/replaceVariables';
+import { toast } from 'sonner';
 
 export default function RestAPI() {
   const t = useTranslations('Restful');
@@ -48,7 +49,7 @@ export default function RestAPI() {
       endpoint: '',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
       code: '',
-      body: ''
+      body: '',
     },
   });
 
@@ -152,15 +153,35 @@ export default function RestAPI() {
   async function submitForm(data: FormValues) {
     setIsLoading(true);
 
-    const resolvedEndpoint = replaceVariables(data.endpoint, variables);
+    let hasMissing = false;
+    const notifyMissing = (key: string) => {
+      hasMissing = true;
+
+      toast.error(t('variableNotFound', { key: `{{${key}}}` }), {
+        richColors: true,
+      });
+    };
+
+    const resolvedEndpoint = replaceVariables(
+      data.endpoint,
+      variables,
+      notifyMissing
+    );
+
     const resolvedBody = data.body
-      ? replaceVariables(data.body, variables)
-      : '';
+      ? replaceVariables(data.body, variables, notifyMissing)
+      : undefined;
+
     const resolvedHeaders = data.headers.map((header) => ({
       ...header,
-      key: replaceVariables(header.key, variables),
-      value: replaceVariables(header.value, variables),
+      key: replaceVariables(header.key, variables, notifyMissing) || '',
+      value: replaceVariables(header.value, variables, notifyMissing) || '',
     }));
+
+    if (hasMissing || !resolvedEndpoint) {
+      setIsLoading(false);
+      return;
+    }
 
     isSubmittingRef.current = true;
 
