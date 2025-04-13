@@ -11,10 +11,7 @@ const History = () => {
       endpoint: string;
       headers: string[];
       body: string;
-      response: {
-        status: number;
-        body: string;
-      };
+      code: string;
     },
   ] = JSON.parse(localStorage.getItem('requests-next-app') || '[]');
 
