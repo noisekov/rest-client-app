@@ -40,7 +40,7 @@ export default function RestAPI() {
       endpoint: '',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
       code: '',
-      body: ''
+      body: '',
     },
   });
 
@@ -78,11 +78,11 @@ export default function RestAPI() {
     if (clikedLinkInHistoryPage && historyRequests) {
       const dataHistoryRequest =
         JSON.parse(historyRequests)[clikedLinkInHistoryPage];
-      console.log(dataHistoryRequest.headers);
-      // form.setValue('headers', dataHistoryRequest.headers);
+      form.setValue('headers', dataHistoryRequest.headers);
       form.setValue('body', dataHistoryRequest.body);
       form.setValue('endpoint', dataHistoryRequest.endpoint);
 
+      setURL(dataHistoryRequest);
       localStorage.removeItem('clikedLink-next-app');
       return;
     }
@@ -197,14 +197,10 @@ export default function RestAPI() {
       historyRequestsArr.push({
         method: data.method,
         endpoint: data.endpoint,
-        headers: headers,
+        headers: getValues('headers'),
         body: data.body,
-        response: {
-          status: response.status,
-          body: responseBody,
-        },
+        code: '',
       });
-
       localStorage.setItem(
         'requests-next-app',
         JSON.stringify(historyRequestsArr)
