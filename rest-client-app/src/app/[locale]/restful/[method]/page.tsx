@@ -87,6 +87,21 @@ export default function RestAPI() {
   };
 
   useEffect(() => {
+    const clikedLinkInHistoryPage = localStorage.getItem('clikedLink-next-app');
+    const historyRequests = localStorage.getItem('requests-next-app');
+
+    if (clikedLinkInHistoryPage && historyRequests) {
+      const dataHistoryRequest =
+        JSON.parse(historyRequests)[clikedLinkInHistoryPage];
+      form.setValue('headers', dataHistoryRequest.headers);
+      form.setValue('body', dataHistoryRequest.body);
+      form.setValue('endpoint', dataHistoryRequest.endpoint);
+
+      setURL(dataHistoryRequest);
+      localStorage.removeItem('clikedLink-next-app');
+      return;
+    }
+
     const searchParams = new URLSearchParams(window.location.search);
 
     const encodedUrl = searchParams.get('url');
@@ -191,6 +206,8 @@ export default function RestAPI() {
       body: resolvedBody,
       headers: resolvedHeaders,
     });
+    setURL(data);
+    const historyRequests = localStorage.getItem('requests-next-app') || '[]';
 
     try {
       const headers: Record<string, string> = {};
@@ -234,6 +251,19 @@ export default function RestAPI() {
         status: response.status,
         body: responseBody,
       });
+
+      const historyRequestsArr = JSON.parse(historyRequests);
+      historyRequestsArr.push({
+        method: data.method,
+        endpoint: data.endpoint,
+        headers: getValues('headers'),
+        body: data.body,
+        code: '',
+      });
+      localStorage.setItem(
+        'requests-next-app',
+        JSON.stringify(historyRequestsArr)
+      );
     } catch (error) {
       console.error(error);
     } finally {
