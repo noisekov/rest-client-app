@@ -15,7 +15,7 @@ const History = () => {
       code: string;
     },
   ] = JSON.parse(localStorage.getItem('requests-next-app') || '[]');
-  const { handleClick } = useClikedLinkStore();
+  const { setIndexLinkInHistoryPage } = useClikedLinkStore();
 
   return (
     <div className="flex items-center justify-center max-w-7xl mx-auto w-full px-4">
@@ -38,7 +38,7 @@ const History = () => {
                   <Link
                     href={`/restful/${request.method}`}
                     className="hover:underline hover:text-blue-400"
-                    onClick={() => handleClick(index)}
+                    onClick={() => setIndexLinkInHistoryPage(index)}
                   >
                     {`${request.method} ${request.endpoint}`}
                   </Link>

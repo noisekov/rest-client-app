@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 interface clikedLinkInHistoryPageStore {
   indexLinkInHistoryPage: number | null;
-  handleClick: (state: number) => void;
+  setIndexLinkInHistoryPage: (state: number) => void;
   clearIndex: () => void;
 }
 
@@ -10,7 +10,7 @@ export const useClikedLinkStore = create<clikedLinkInHistoryPageStore>(
   (set) => ({
     indexLinkInHistoryPage: null,
 
-    handleClick: (index) => {
+    setIndexLinkInHistoryPage: (index) => {
       set((state) => ({
         indexLinkInHistoryPage: (state.indexLinkInHistoryPage = index),
       }));
