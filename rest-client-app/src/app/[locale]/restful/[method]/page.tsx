@@ -71,7 +71,7 @@ export default function RestAPI() {
     );
   };
 
-  const { indexLinkInHistoryPage } = useClikedLinkStore();
+  const { indexLinkInHistoryPage, clearIndex } = useClikedLinkStore();
 
   useEffect(() => {
     const historyRequests = localStorage.getItem('requests-next-app');
@@ -83,6 +83,7 @@ export default function RestAPI() {
       form.setValue('body', dataHistoryRequest.body);
       form.setValue('endpoint', dataHistoryRequest.endpoint);
 
+      clearIndex();
       setURL(dataHistoryRequest);
       return;
     }
