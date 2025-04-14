@@ -137,9 +137,9 @@ export default function RestAPI() {
     const subscription = watch((data) => {
       if (!isSubmittingRef.current) {
         setURL(data as FormValues);
-      } else {
-        isSubmittingRef.current = false;
+        return;
       }
+      isSubmittingRef.current = false;
     });
 
     return () => subscription.unsubscribe();
@@ -206,7 +206,7 @@ export default function RestAPI() {
       body: resolvedBody,
       headers: resolvedHeaders,
     });
-    setURL(data);
+
     const historyRequests = localStorage.getItem('requests-next-app') || '[]';
 
     try {
@@ -253,13 +253,15 @@ export default function RestAPI() {
       });
 
       const historyRequestsArr = JSON.parse(historyRequests);
+
       historyRequestsArr.push({
         method: data.method,
-        endpoint: data.endpoint,
-        headers: getValues('headers'),
-        body: data.body,
+        endpoint: resolvedEndpoint,
+        headers: resolvedHeaders,
+        body: resolvedBody,
         code: '',
       });
+
       localStorage.setItem(
         'requests-next-app',
         JSON.stringify(historyRequestsArr)

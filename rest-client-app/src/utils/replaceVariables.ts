@@ -6,9 +6,9 @@ export function replaceVariables(
   return str.replace(/\{\{(\w+)\}\}/g, (_, key) => {
     if (key in variables) {
       return variables[key];
-    } else {
-      onMissing?.(key);
-      return `{{${key}}}`;
     }
+
+    onMissing?.(key);
+    return `{{${key}}}`;
   });
 }
