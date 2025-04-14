@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
+import { useClikedLinkStore } from '@/store/clikedLinkInHistoryPageStore';
 import { useTranslations } from 'next-intl';
 
 const History = () => {
@@ -14,6 +15,7 @@ const History = () => {
       code: string;
     },
   ] = JSON.parse(localStorage.getItem('requests-next-app') || '[]');
+  const { handleClick } = useClikedLinkStore();
 
   return (
     <div className="flex items-center justify-center max-w-7xl mx-auto w-full px-4">
@@ -36,9 +38,7 @@ const History = () => {
                   <Link
                     href={`/restful/${request.method}`}
                     className="hover:underline hover:text-blue-400"
-                    onClick={() =>
-                      localStorage.setItem('clikedLink-next-app', String(index))
-                    }
+                    onClick={() => handleClick(index)}
                   >
                     {`${request.method} ${request.endpoint}`}
                   </Link>

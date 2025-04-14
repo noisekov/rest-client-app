@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useClikedLinkStore } from '@/store/clikedLinkInHistoryPageStore';
 import { FormValues, Header, Methods } from '@/types/restAPI';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
@@ -45,7 +46,6 @@ export default function RestAPI() {
   });
 
   const { control, handleSubmit, setValue, getValues } = form;
-
   const { watch } = form;
 
   const addHeader = () => {
@@ -71,19 +71,19 @@ export default function RestAPI() {
     );
   };
 
+  const { indexLinkInHistoryPage } = useClikedLinkStore();
+
   useEffect(() => {
-    const clikedLinkInHistoryPage = localStorage.getItem('clikedLink-next-app');
     const historyRequests = localStorage.getItem('requests-next-app');
 
-    if (clikedLinkInHistoryPage && historyRequests) {
+    if (indexLinkInHistoryPage && historyRequests) {
       const dataHistoryRequest =
-        JSON.parse(historyRequests)[clikedLinkInHistoryPage];
+        JSON.parse(historyRequests)[indexLinkInHistoryPage];
       form.setValue('headers', dataHistoryRequest.headers);
       form.setValue('body', dataHistoryRequest.body);
       form.setValue('endpoint', dataHistoryRequest.endpoint);
 
       setURL(dataHistoryRequest);
-      localStorage.removeItem('clikedLink-next-app');
       return;
     }
 
