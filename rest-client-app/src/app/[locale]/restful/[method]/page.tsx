@@ -135,11 +135,11 @@ export default function RestAPI() {
 
   useEffect(() => {
     const subscription = watch((data) => {
-      if (!isSubmittingRef.current) {
-        setURL(data as FormValues);
+      if (isSubmittingRef.current) {
+        isSubmittingRef.current = false;
         return;
       }
-      isSubmittingRef.current = false;
+      setURL(data as FormValues);
     });
 
     return () => subscription.unsubscribe();
