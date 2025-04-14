@@ -127,7 +127,7 @@ export default function Variables() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="cursor-pointer"
+                    className="cursor-pointer transition-colors border border-input text-foreground hover:bg-destructive hover:text-white hover:border-destructive"
                     onClick={() => user && deleteVariable(user.uid, key)}
                   >
                     {t('delete')}

@@ -17,11 +17,20 @@ import { Textarea } from '@/components/ui/textarea';
 import { FormValues, Header, Methods } from '@/types/restAPI';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { useVariableStore } from '@/store/variableStore';
+import { useAuthStore } from '@/store/authStore';
+import { replaceVariables } from '@/utils/replaceVariables';
+import { toast } from 'sonner';
 
 export default function RestAPI() {
   const t = useTranslations('Restful');
+
+  const { user } = useAuthStore();
+  const { variables, loadVariables } = useVariableStore();
+  const isSubmittingRef = useRef(false);
+
   const params = useParams();
   const paramsMethod = params.method;
   const defaultMethod = Object.values(Methods).includes(paramsMethod as Methods)
@@ -47,6 +56,12 @@ export default function RestAPI() {
   const { control, handleSubmit, setValue, getValues } = form;
 
   const { watch } = form;
+
+  useEffect(() => {
+    if (user?.uid) {
+      loadVariables(user.uid);
+    }
+  }, [user?.uid, loadVariables]);
 
   const addHeader = () => {
     setValue('headers', [
@@ -120,6 +135,10 @@ export default function RestAPI() {
 
   useEffect(() => {
     const subscription = watch((data) => {
+      if (isSubmittingRef.current) {
+        isSubmittingRef.current = false;
+        return;
+      }
       setURL(data as FormValues);
     });
 
@@ -142,18 +161,58 @@ export default function RestAPI() {
       `url=${encodedUrl}` +
       (encodedBody ? `&body=${encodedBody}` : '') +
       (encodeHeaders ? `&${encodeHeaders}` : '');
+
     window.history.replaceState(null, '', newUrl);
   }
 
   async function submitForm(data: FormValues) {
     setIsLoading(true);
-    setURL(data);
+
+    let hasMissing = false;
+    const notifyMissing = (key: string) => {
+      hasMissing = true;
+
+      toast.error(t('variableNotFound', { key: `{{${key}}}` }), {
+        richColors: true,
+      });
+    };
+
+    const resolvedEndpoint = replaceVariables(
+      data.endpoint,
+      variables,
+      notifyMissing
+    );
+
+    const resolvedBody = data.body
+      ? replaceVariables(data.body, variables, notifyMissing)
+      : undefined;
+
+    const resolvedHeaders = data.headers.map((header) => ({
+      ...header,
+      key: replaceVariables(header.key, variables, notifyMissing) || '',
+      value: replaceVariables(header.value, variables, notifyMissing) || '',
+    }));
+
+    if (hasMissing || !resolvedEndpoint) {
+      setIsLoading(false);
+      return;
+    }
+
+    isSubmittingRef.current = true;
+
+    setURL({
+      ...data,
+      endpoint: resolvedEndpoint,
+      body: resolvedBody,
+      headers: resolvedHeaders,
+    });
+
     const historyRequests = localStorage.getItem('requests-next-app') || '[]';
 
     try {
       const headers: Record<string, string> = {};
 
-      data.headers.forEach((header) => {
+      resolvedHeaders.forEach((header) => {
         if (header.key && header.value) {
           headers[header.key] = header.value;
         }
@@ -173,11 +232,11 @@ export default function RestAPI() {
         headers: headers,
       };
 
-      if (!['GET', 'HEAD', 'OPTIONS'].includes(data.method) && data.body) {
-        fetchOptions.body = data.body;
+      if (!['GET', 'HEAD', 'OPTIONS'].includes(data.method) && resolvedBody) {
+        fetchOptions.body = resolvedBody;
       }
 
-      const response = await fetch(data.endpoint, fetchOptions);
+      const response = await fetch(resolvedEndpoint, fetchOptions);
 
       let responseBody;
 
@@ -194,13 +253,15 @@ export default function RestAPI() {
       });
 
       const historyRequestsArr = JSON.parse(historyRequests);
+
       historyRequestsArr.push({
         method: data.method,
-        endpoint: data.endpoint,
-        headers: getValues('headers'),
-        body: data.body,
+        endpoint: resolvedEndpoint,
+        headers: resolvedHeaders,
+        body: resolvedBody,
         code: '',
       });
+
       localStorage.setItem(
         'requests-next-app',
         JSON.stringify(historyRequestsArr)
