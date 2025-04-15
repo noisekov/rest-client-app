@@ -268,6 +268,11 @@ export default function RestAPI() {
       );
     } catch (error) {
       console.error(error);
+      if (error instanceof Error) {
+        toast.error(error.message, {
+          richColors: true,
+        });
+      }
     } finally {
       setIsLoading(false);
     }
