@@ -75,5 +75,9 @@
     "variableExists": "Variable with the name \"{key}\" already exists. Please use a different name.",
     "notFound": "No variables yet",
     "delete": "Delete"
+  },
+  "ErrorBoundary": {
+    "title": "Something went wrong.",
+    "description": "Please try again later or contact support."
   }
 }
