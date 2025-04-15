@@ -32,6 +32,7 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
@@ -44,7 +45,6 @@ export default async function RootLayout({
         <NextIntlClientProvider>
           <AuthProvider>
             <Header />
-
             <main className="flex flex-1 overflow-y-auto px-4 py-6 font-[family-name:var(--font-geist-sans)]">
               {children}
             </main>
@@ -63,7 +63,6 @@ export default async function RootLayout({
                 duration: 4000,
               }}
             />
-
             <Footer />
           </AuthProvider>
         </NextIntlClientProvider>

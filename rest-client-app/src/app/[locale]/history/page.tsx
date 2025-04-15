@@ -23,13 +23,13 @@ const History = () => {
             <p className="m-0">{t('title')}</p>
             <p className="m-0">{t('subtitle')}</p>
             <Button asChild size="sm">
-              <Link href="/restful"> REST Client</Link>
+              <Link href="/restful">REST Client</Link>
             </Button>
           </>
         ) : (
           <>
-            <div>{t('requests')}</div>
-            <ul className="border-2 border-gray-300 rounded-md p-4 bg-gray-50 text-left">
+            <p>{t('requests')}</p>
+            <ul className="border border-dashed rounded-md p-4 text-left">
               {requests.map((request, index) => (
                 <li key={crypto.randomUUID()}>
                   <span className="mr-2">{index + 1}.</span>

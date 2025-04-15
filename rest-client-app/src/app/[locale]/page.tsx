@@ -55,6 +55,19 @@ export default function MainPage() {
             <Link href="/signup">{t('sign_up')}</Link>
           </Button>
         </div>
+        <article className="text-center border border-dashed rounded-md p-4 max-w-[500px]">
+          <p className="text-[1.2rem] mb-2">{t('about_project')}</p>
+          {t('about')}
+        </article>
+        <article className="text-center border border-dashed rounded-md p-4 max-w-[500px]">
+          <p className="text-[1.2rem] mb-2">{t('about_course')}</p>
+          <ul className="text-left">
+            <li>🎓 {t('knowledge')}</li>
+            <li>📚 {t('materials')}</li>
+            <li>💡 {t('education')}</li>
+            <li>📜 {t('certificate')}</li>
+          </ul>
+        </article>
       </div>
     </div>
   );

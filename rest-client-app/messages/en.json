@@ -10,7 +10,14 @@
     "sign_in": "Sign In",
     "sign_up": "Sign Up",
     "history": "History",
-    "variables": "Variables"
+    "variables": "Variables",
+    "about": "This web application is a lightweight Postman-inspired tool for REST API testing. It enables sending HTTP requests, managing headers and variables, maintaining request history, supporting user authentication and internationalization, while also generating code snippets for popular programming languages. Built with React/TypeScript and Next.js, it utilizes Firebase for authentication.",
+    "about_project": "About project",
+    "about_course": "About course",
+    "knowledge": "Open to all (age/background/location), basic knowledge required.",
+    "materials": "Public materials on YouTube & GitHub.",
+    "education": "Free education driven by mentorship & community.",
+    "certificate": "E-certificate after completion."
   },
   "SignIn": {
     "title": "Sign In",
