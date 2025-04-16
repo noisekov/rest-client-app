@@ -75,5 +75,10 @@
     "variableExists": "Variable with the name \"{key}\" already exists. Please use a different name.",
     "notFound": "No variables yet",
     "delete": "Delete"
+  },
+  "NotFound": {
+    "title": "Oops! This page doesn’t exist.",
+    "description": "The page you are trying to reach might have been removed, had its name changed, or is temporarily unavailable.",
+    "goHome": "Go back to home"
   }
 }
