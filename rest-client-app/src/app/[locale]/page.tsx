@@ -72,7 +72,7 @@ export default function MainPage() {
         </div>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[1000px]">
           <li className="border border-dashed rounded-md text-center p-4">
-            <a href="https://github.com/noisekov">
+            <a href="https://github.com/noisekov" target="_blank">
               <p className="mb-2">
                 <b>noisekov</b>
                 <br />
@@ -82,7 +82,7 @@ export default function MainPage() {
             </a>
           </li>
           <li className="border border-dashed rounded-md text-center p-4">
-            <a href="https://github.com/skayer81">
+            <a href="https://github.com/skayer81" target="_blank">
               <p className="mb-2">
                 <b>skayer81</b>
                 <br />
@@ -92,7 +92,7 @@ export default function MainPage() {
             </a>
           </li>
           <li className="border border-dashed rounded-md text-center p-4">
-            <a href="https://github.com/LaraNU">
+            <a href="https://github.com/LaraNU" target="_blank">
               <p className="mb-2">
                 <b>LaraNU</b>
                 <br />
