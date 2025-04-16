@@ -72,19 +72,6 @@ export default function MainPage() {
         </div>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[1000px]">
           <li className="border border-dashed rounded-md text-center p-4">
-            <a href="https://github.com/LaraNU">
-              <p className="mb-2">
-                <b>LaraNU</b>
-                <br />
-                <span className="text-sm">Frontend</span>
-              </p>
-              <p>
-                Lara from Russia, variables page, error handler, authorization,
-                write test
-              </p>
-            </a>
-          </li>
-          <li className="border border-dashed rounded-md text-center p-4">
             <a href="https://github.com/noisekov">
               <p className="mb-2">
                 <b>noisekov</b>
@@ -101,7 +88,17 @@ export default function MainPage() {
                 <br />
                 <span className="text-sm">Frontend</span>
               </p>
-              <p>Sergey from Russia, Create RESTClient, write test</p>
+              <p>{t('sergey')}</p>
+            </a>
+          </li>
+          <li className="border border-dashed rounded-md text-center p-4">
+            <a href="https://github.com/LaraNU">
+              <p className="mb-2">
+                <b>LaraNU</b>
+                <br />
+                <span className="text-sm">Frontend</span>
+              </p>
+              <p>{t('lara')}</p>
             </a>
           </li>
         </ul>
