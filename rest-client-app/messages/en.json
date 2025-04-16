@@ -17,7 +17,8 @@
     "knowledge": "Open to all (age/background/location), basic knowledge required.",
     "materials": "Public materials on YouTube & GitHub.",
     "education": "Free education driven by mentorship & community.",
-    "certificate": "E-certificate after completion."
+    "certificate": "E-certificate after completion.",
+    "vladimir": "Vladimir from Saint-Petersburg implemented the project by initializing and configuring the setup, installing and integrating all required libraries, adding internationalization support, developing the history page, designing the main page UI with content, and writing test cases."
   },
   "SignIn": {
     "title": "Sign In",

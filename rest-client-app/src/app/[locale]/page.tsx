@@ -55,19 +55,56 @@ export default function MainPage() {
             <Link href="/signup">{t('sign_up')}</Link>
           </Button>
         </div>
-        <article className="text-center border border-dashed rounded-md p-4 max-w-[500px]">
-          <p className="text-[1.2rem] mb-2">{t('about_project')}</p>
-          {t('about')}
-        </article>
-        <article className="text-center border border-dashed rounded-md p-4 max-w-[500px]">
-          <p className="text-[1.2rem] mb-2">{t('about_course')}</p>
-          <ul className="text-left">
-            <li>🎓 {t('knowledge')}</li>
-            <li>📚 {t('materials')}</li>
-            <li>💡 {t('education')}</li>
-            <li>📜 {t('certificate')}</li>
-          </ul>
-        </article>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4  max-w-[1000px]">
+          <article className="text-center border border-dashed rounded-md p-4 max-w-[500px]">
+            <p className="text-[1.2rem] mb-2">{t('about_project')}</p>
+            {t('about')}
+          </article>
+          <article className="text-center border border-dashed rounded-md p-4 max-w-[500px]">
+            <p className="text-[1.2rem] mb-2">{t('about_course')}</p>
+            <ul className="text-left">
+              <li>🎓 {t('knowledge')}</li>
+              <li>📚 {t('materials')}</li>
+              <li>💡 {t('education')}</li>
+              <li>📜 {t('certificate')}</li>
+            </ul>
+          </article>
+        </div>
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[1000px]">
+          <li className="border border-dashed rounded-md text-center p-4">
+            <a href="https://github.com/LaraNU">
+              <p className="mb-2">
+                <b>LaraNU</b>
+                <br />
+                <span className="text-sm">Frontend</span>
+              </p>
+              <p>
+                Lara from Russia, variables page, error handler, authorization,
+                write test
+              </p>
+            </a>
+          </li>
+          <li className="border border-dashed rounded-md text-center p-4">
+            <a href="https://github.com/noisekov">
+              <p className="mb-2">
+                <b>noisekov</b>
+                <br />
+                <span className="text-sm">Team Lead</span>
+              </p>
+              <p>{t('vladimir')}</p>
+            </a>
+          </li>
+          <li className="border border-dashed rounded-md text-center p-4">
+            <a href="https://github.com/skayer81">
+              <p className="mb-2">
+                <b>skayer81</b>
+                <br />
+                <span className="text-sm">Frontend</span>
+              </p>
+              <p>Sergey from Russia, Create RESTClient, write test</p>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   );
