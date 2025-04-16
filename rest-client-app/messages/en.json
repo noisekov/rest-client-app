@@ -83,6 +83,10 @@
     "notFound": "No variables yet",
     "delete": "Delete"
   },
+  "ErrorBoundary": {
+    "title": "Something went wrong.",
+    "description": "Please try again later or contact support."
+  },
   "NotFound": {
     "title": "Oops! This page doesn’t exist.",
     "description": "The page you are trying to reach might have been removed, had its name changed, or is temporarily unavailable.",
