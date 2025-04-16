@@ -71,7 +71,7 @@ export default function MainPage() {
           </article>
         </div>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[1000px]">
-          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4">
+          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4 max-w-[500px]">
             <a href="https://github.com/noisekov" target="_blank">
               <p className="mb-2">
                 <b>noisekov</b>
@@ -81,7 +81,7 @@ export default function MainPage() {
               <p>{t('vladimir')}</p>
             </a>
           </li>
-          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4">
+          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4 max-w-[500px]">
             <a href="https://github.com/skayer81" target="_blank">
               <p className="mb-2">
                 <b>skayer81</b>
@@ -91,7 +91,7 @@ export default function MainPage() {
               <p>{t('sergey')}</p>
             </a>
           </li>
-          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4">
+          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4 max-w-[500px]">
             <a href="https://github.com/LaraNU" target="_blank">
               <p className="mb-2">
                 <b>LaraNU</b>
