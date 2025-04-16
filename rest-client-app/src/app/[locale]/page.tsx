@@ -55,12 +55,12 @@ export default function MainPage() {
             <Link href="/signup">{t('sign_up')}</Link>
           </Button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4  max-w-[1000px]">
-          <article className="text-center border border-dashed rounded-md p-4 max-w-[500px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[1000px]">
+          <article className="text-center border-2 border-gray-300 rounded-md bg-gray-50 p-4 max-w-[500px]">
             <p className="text-[1.2rem] mb-2">{t('about_project')}</p>
             {t('about')}
           </article>
-          <article className="text-center border border-dashed rounded-md p-4 max-w-[500px]">
+          <article className="text-center border-2 border-gray-300 rounded-md bg-gray-50 p-4 max-w-[500px]">
             <p className="text-[1.2rem] mb-2">{t('about_course')}</p>
             <ul className="text-left">
               <li>🎓 {t('knowledge')}</li>
@@ -71,7 +71,7 @@ export default function MainPage() {
           </article>
         </div>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[1000px]">
-          <li className="border border-dashed rounded-md text-center p-4">
+          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4">
             <a href="https://github.com/noisekov" target="_blank">
               <p className="mb-2">
                 <b>noisekov</b>
@@ -81,7 +81,7 @@ export default function MainPage() {
               <p>{t('vladimir')}</p>
             </a>
           </li>
-          <li className="border border-dashed rounded-md text-center p-4">
+          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4">
             <a href="https://github.com/skayer81" target="_blank">
               <p className="mb-2">
                 <b>skayer81</b>
@@ -91,7 +91,7 @@ export default function MainPage() {
               <p>{t('sergey')}</p>
             </a>
           </li>
-          <li className="border border-dashed rounded-md text-center p-4">
+          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4">
             <a href="https://github.com/LaraNU" target="_blank">
               <p className="mb-2">
                 <b>LaraNU</b>

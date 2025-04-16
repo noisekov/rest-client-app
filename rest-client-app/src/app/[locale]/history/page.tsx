@@ -31,7 +31,7 @@ const History = () => {
         ) : (
           <>
             <p>{t('requests')}</p>
-            <ul className="border border-dashed rounded-md p-4 text-left">
+            <ul className="border-2 border-gray-300 rounded-md p-4 bg-gray-50 text-left">
               {requests.map((request, index) => (
                 <li key={crypto.randomUUID()}>
                   <span className="mr-2">{index + 1}.</span>
