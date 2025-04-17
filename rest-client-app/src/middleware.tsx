@@ -14,7 +14,9 @@ export function middleware(request: NextRequest) {
 
   const pathNameWithoutLocale = pathname.replace(/^\/(en|ru)/, '');
 
-  const isProtected = protectedRoutes.includes(pathNameWithoutLocale);
+  const isProtected = protectedRoutes.some((route) =>
+    pathNameWithoutLocale.startsWith(route)
+  );
   const isAuthPage = authRoutes.includes(pathNameWithoutLocale);
 
   const url = new URL(`/`, request.url);
