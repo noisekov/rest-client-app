@@ -59,7 +59,8 @@
     "key": "Key",
     "value": "Value",
     "remove": "Remove",
-    "variableNotFound": "Variable {key} not found"
+    "variableNotFound": "Variable {key} not found",
+    "code_language": "Choose language"
   },
   "History": {
     "title": "You haven't executed any requests.",
