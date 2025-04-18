@@ -18,9 +18,9 @@
     "materials": "Public materials on YouTube & GitHub.",
     "education": "Free education driven by mentorship & community.",
     "certificate": "E-certificate after completion.",
-    "vladimir": "Vladimir from Saint-Petersburg implemented the project by initializing and configuring the setup, adding internationalization support, developing the history page, designing the main page UI with content, and writing test cases.",
+    "vladimir": "Vladimir from Saint-Petersburg implemented the project by initializing and configuring the setup, adding internationalization support, developing the history page and implement the REST client generation code, designing the main page UI with content, and writing test cases.",
     "lara": "Larisa from Yaroslavl integrated Firebase-based authentication, designed key UI elements including the header, footer, and 404 page, implemented robust error handling, created a dedicated variables page, and writing test cases.  ",
-    "sergey": "Sergey from Rybinsk developed the REST client, implementing all related functionality, and wrote comprehensive tests for the features."
+    "sergey": "Sergey from Rybinsk developed the REST client, implementing all related functionality without generation code, and wrote comprehensive tests for the features."
   },
   "SignIn": {
     "title": "Sign In",
