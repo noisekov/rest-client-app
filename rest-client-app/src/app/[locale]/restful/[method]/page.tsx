@@ -277,6 +277,10 @@ export default function RestAPI() {
       getValues('headers').forEach((header) => {
         request.addHeader({ key: header.key, value: header.value });
       });
+      request.body = new sdk.RequestBody({
+        mode: 'raw',
+        raw: getValues('body'),
+      });
       const options = {
         indentCount: 3,
         indentType: 'Space',
