@@ -1,5 +1,7 @@
 'use client';
 
+import codegen from 'postman-code-generators';
+import sdk from 'postman-collection';
 import { HeadersList } from '@/components/HeadersList/HeadersList';
 import { SelectMethod } from '@/components/SelectMethod/SelectMethod';
 import { Button } from '@/components/ui/button';
@@ -24,24 +26,41 @@ import { useVariableStore } from '@/store/variableStore';
 import { useAuthStore } from '@/store/authStore';
 import { replaceVariables } from '@/utils/replaceVariables';
 import { toast } from 'sonner';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+const Code = {
+  curl: '{ "language": "cURL", "variant": "cURL" }',
+  'JavaScript (Fetch api)': '{ "language": "JavaScript", "variant": "Fetch" }',
+  'JavaScript (XHR)': '{ "language": "JavaScript", "variant": "XHR" }',
+  NodeJS: '{ "language": "NodeJS", "variant": "Axios" }',
+  Python: '{ "language": "Python", "variant": "Requests" }',
+  Java: '{ "language": "Java", "variant": "OkHttp" }',
+  'C#': '{ "language": "C#", "variant": "HttpClient" }',
+  Go: '{ "language": "Go", "variant": "Native" }',
+};
 
 export default function RestAPI() {
   const t = useTranslations('Restful');
-
   const { user } = useAuthStore();
   const { variables, loadVariables } = useVariableStore();
   const isSubmittingRef = useRef(false);
-
   const params = useParams();
   const paramsMethod = params.method;
   const defaultMethod = Object.values(Methods).includes(paramsMethod as Methods)
     ? (paramsMethod as Methods)
     : Methods.GET;
-
+  const defaultCode = Code.curl;
   const [response, setResponse] = useState<{
     status: number | null;
     body: string;
-  }>({ status: null, body: '' });
+    code: string;
+  }>({ status: null, body: '', code: '' });
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<FormValues>({
@@ -49,7 +68,7 @@ export default function RestAPI() {
       method: defaultMethod,
       endpoint: '',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
-      code: '',
+      code: defaultCode,
       body: '',
     },
   });
@@ -100,18 +119,20 @@ export default function RestAPI() {
 
       clearIndex();
       setURL(dataHistoryRequest);
+
       return;
     }
 
     const searchParams = new URLSearchParams(window.location.search);
-
     const encodedUrl = searchParams.get('url');
+
     if (encodedUrl) {
       const url = Buffer.from(encodedUrl, 'base64').toString();
       form.setValue('endpoint', url);
     }
 
     const encodedBody = searchParams.get('body');
+
     if (encodedBody) {
       const body = Buffer.from(encodedBody, 'base64').toString();
       form.setValue('body', body);
@@ -140,6 +161,7 @@ export default function RestAPI() {
         isSubmittingRef.current = false;
         return;
       }
+
       setURL(data as FormValues);
     });
 
@@ -156,7 +178,6 @@ export default function RestAPI() {
         .filter((header) => header.key && header.value)
         .map(({ key, value }) => [key, encodeURIComponent(value)])
     ).toString();
-
     const newUrl =
       `/restful/${data.method}?` +
       `url=${encodedUrl}` +
@@ -196,6 +217,7 @@ export default function RestAPI() {
 
     if (hasMissing || !resolvedEndpoint) {
       setIsLoading(false);
+
       return;
     }
 
@@ -238,7 +260,6 @@ export default function RestAPI() {
       }
 
       const response = await fetch(resolvedEndpoint, fetchOptions);
-
       let responseBody;
 
       try {
@@ -248,19 +269,54 @@ export default function RestAPI() {
         responseBody = await response.text();
       }
 
-      setResponse({
-        status: response.status,
-        body: responseBody,
+      const { language, variant } = JSON.parse(
+        getValues('code') || '{ "language": "cURL", "variant": "cURL" }'
+      );
+      const request = new sdk.Request(resolvedEndpoint);
+      request.method = data.method;
+      getValues('headers').forEach((header) => {
+        request.addHeader({ key: header.key, value: header.value });
       });
+      request.body = new sdk.RequestBody({
+        mode: 'raw',
+        raw: getValues('body'),
+      });
+      const options = {
+        indentCount: 3,
+        indentType: 'Space',
+        trimRequestBody: true,
+        followRedirect: true,
+      };
+      codegen.convert(
+        language,
+        variant,
+        request,
+        options,
+        function (error: string, code: string) {
+          let isError = false;
+
+          if (error) {
+            toast.error(error, {
+              richColors: false,
+            });
+            isError = true;
+          }
+
+          setResponse({
+            status: response.status,
+            body: responseBody,
+            code: isError ? '' : code,
+          });
+        }
+      );
 
       const historyRequestsArr = JSON.parse(historyRequests);
-
-      historyRequestsArr.push({
+      historyRequestsArr.unshift({
         method: data.method,
         endpoint: resolvedEndpoint,
         headers: resolvedHeaders,
         body: resolvedBody,
-        code: '',
+        code: getValues('code'),
       });
 
       localStorage.setItem(
@@ -268,12 +324,15 @@ export default function RestAPI() {
         JSON.stringify(historyRequestsArr)
       );
     } catch (error) {
-      console.error(error);
       if (error instanceof Error) {
         toast.error(error.message, {
           richColors: true,
         });
+
+        return;
       }
+
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -289,7 +348,6 @@ export default function RestAPI() {
               <legend className="px-2 font-semibold text-lg">
                 {t('rest_client')}
               </legend>
-
               <FormField
                 control={control}
                 name="method"
@@ -318,7 +376,6 @@ export default function RestAPI() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={control}
                 name="headers"
@@ -334,6 +391,33 @@ export default function RestAPI() {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="code"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('code_language')}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Code" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.entries(Code).map(([key, code]) => {
+                          return (
+                            <SelectItem key={crypto.randomUUID()} value={code}>
+                              {key}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <div className="mb-4">
                 <FormField
                   control={control}
@@ -345,6 +429,7 @@ export default function RestAPI() {
                         <Textarea
                           placeholder={t('code_placeholder')}
                           {...field}
+                          value={response.code}
                         />
                       </FormControl>
                       <FormMessage />
@@ -380,7 +465,6 @@ export default function RestAPI() {
             </fieldset>
           </form>
         </Form>
-
         <h3 className="px-2 font-semibold text-lg mb-4">{t('response')}</h3>
         <div className="space-y-4">
           <div>

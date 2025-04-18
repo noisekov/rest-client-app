@@ -69,7 +69,8 @@
     "key": "Ключ",
     "value": "Значение",
     "remove": "Удалить",
-    "variableNotFound": "Переменная {key} не найдена"
+    "variableNotFound": "Переменная {key} не найдена",
+    "code_language": "Выберите язык"
   },
   "History": {
     "title": "Вы не выполнили ни одного запроса.",
