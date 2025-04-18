@@ -24,37 +24,40 @@ export default function MainPage() {
     );
   }
 
-  return user ? (
+  return (
     <div className="flex items-center justify-center max-w-7xl mx-auto w-full px-4">
       <div className="flex flex-col gap-4 items-center">
-        <div>
-          {t('welcomeBack')}, {user.displayName}!
-        </div>
-        <div className="flex gap-4">
-          <Button size="lg" asChild>
-            <Link href="/restful">REST Client</Link>
-          </Button>
-          <Button variant="outline" size="lg" asChild>
-            <Link href="/history">{t('history')}</Link>
-          </Button>
-          <Button variant="outline" size="lg" asChild>
-            <Link href="/variables">{t('variables')}</Link>
-          </Button>
-        </div>
-      </div>
-    </div>
-  ) : (
-    <div className="flex items-center justify-center max-w-7xl mx-auto w-full px-4">
-      <div className="flex flex-col gap-4 items-center">
-        <p>{t('welcome')}!</p>
-        <div className="flex gap-4">
-          <Button variant="outline" size="lg" asChild>
-            <Link href="/signin">{t('sign_in')}</Link>
-          </Button>
-          <Button size="lg" asChild>
-            <Link href="/signup">{t('sign_up')}</Link>
-          </Button>
-        </div>
+        {user ? (
+          <>
+            <div>
+              {t('welcomeBack')}, {user.displayName}!
+            </div>
+            <div className="flex gap-4">
+              <Button size="lg" asChild>
+                <Link href="/restful">REST Client</Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <Link href="/history">{t('history')}</Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <Link href="/variables">{t('variables')}</Link>
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p>{t('welcome')}!</p>
+            <div className="flex gap-4">
+              <Button variant="outline" size="lg" asChild>
+                <Link href="/signin">{t('sign_in')}</Link>
+              </Button>
+              <Button size="lg" asChild>
+                <Link href="/signup">{t('sign_up')}</Link>
+              </Button>
+            </div>
+          </>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[1000px]">
           <article className="text-center border-2 border-gray-300 rounded-md bg-gray-50 p-4 max-w-[500px]">
             <p className="text-[1.2rem] mb-2">{t('about_project')}</p>
