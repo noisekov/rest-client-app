@@ -58,7 +58,7 @@ export function LoginForm() {
       );
       const user = userCredential.user;
 
-      const token = getIdToken(user);
+      const token = await getIdToken(user);
 
       await fetch('/api/set-token', {
         method: 'POST',
