@@ -19,8 +19,7 @@ import {
   updateProfile,
   getIdToken,
 } from 'firebase/auth';
-import { auth, db } from '@/firebase';
-import { setDoc, doc } from 'firebase/firestore';
+import { auth } from '@/firebase';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { useTranslations } from 'next-intl';
@@ -79,13 +78,6 @@ export function UserForm() {
       await updateProfile(user, { displayName: name });
 
       setUser({ ...user, displayName: name });
-
-      await setDoc(doc(db, 'users', user.uid), {
-        uid: user.uid,
-        name,
-        authProvider: 'local',
-        email,
-      });
     } catch (err) {
       console.error(err);
     }
