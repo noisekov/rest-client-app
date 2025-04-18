@@ -41,12 +41,17 @@ export default function MainPage() {
           {t('welcomeBack')}, {user.displayName}!
         </div>
         <div className="flex gap-4">
-          <Button size="lg" onClick={() => handleSecureNavigation('/restful')}>
+          <Button
+            size="lg"
+            className="cursor-pointer"
+            onClick={() => handleSecureNavigation('/restful')}
+          >
             REST Client
           </Button>
           <Button
             variant="outline"
             size="lg"
+            className="cursor-pointer"
             onClick={() => handleSecureNavigation('/history')}
           >
             {t('history')}
@@ -54,6 +59,7 @@ export default function MainPage() {
           <Button
             variant="outline"
             size="lg"
+            className="cursor-pointer"
             onClick={() => handleSecureNavigation('/variables')}
           >
             {t('variables')}
