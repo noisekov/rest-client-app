@@ -91,7 +91,7 @@ export default function RestAPI() {
   useEffect(() => {
     const historyRequests = localStorage.getItem('requests-next-app');
 
-    if (indexLinkInHistoryPage && historyRequests) {
+    if (typeof indexLinkInHistoryPage === 'number' && historyRequests) {
       const dataHistoryRequest =
         JSON.parse(historyRequests)[indexLinkInHistoryPage];
       form.setValue('headers', dataHistoryRequest.headers);
