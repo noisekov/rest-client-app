@@ -87,6 +87,9 @@
     "notFound": "No variables yet",
     "delete": "Delete"
   },
+  "Auth": {
+    "sessionExpired": "Your session has expired. Please log in again."
+  },
   "ErrorBoundary": {
     "title": "Something went wrong.",
     "description": "Please try again later or contact support."

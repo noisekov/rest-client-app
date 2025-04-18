@@ -5,10 +5,20 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/store/authStore';
+import { authFetch } from '@/utils/authFetch';
+import { useRouter } from '@/i18n/navigation';
 
 export default function MainPage() {
   const t = useTranslations('MainPage');
   const { user, loading } = useAuthStore();
+  const router = useRouter();
+
+  const handleSecureNavigation = async (path: string) => {
+    const res = await authFetch('/api/check-token');
+    if (res.status !== 401) {
+      router.push(path);
+    }
+  };
 
   if (loading) {
     return (
@@ -33,14 +43,28 @@ export default function MainPage() {
               {t('welcomeBack')}, {user.displayName}!
             </div>
             <div className="flex gap-4">
-              <Button size="lg" asChild>
-                <Link href="/restful">REST Client</Link>
+              <Button
+                size="lg"
+                className="cursor-pointer"
+                onClick={() => handleSecureNavigation('/restful')}
+              >
+                REST Client
               </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/history">{t('history')}</Link>
+              <Button
+                variant="outline"
+                size="lg"
+                className="cursor-pointer"
+                onClick={() => handleSecureNavigation('/history')}
+              >
+                {t('history')}
               </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/variables">{t('variables')}</Link>
+              <Button
+                variant="outline"
+                size="lg"
+                className="cursor-pointer"
+                onClick={() => handleSecureNavigation('/variables')}
+              >
+                {t('variables')}
               </Button>
             </div>
           </>

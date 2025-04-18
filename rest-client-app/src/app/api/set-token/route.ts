@@ -10,11 +10,13 @@ export async function POST(req: NextRequest) {
 
   const cookieStore = await cookies();
 
+  const maxAge = 60 * 50;
+
   cookieStore.set('authToken', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     path: '/',
-    maxAge: 60 * 60 * 24 * 5,
+    maxAge,
     sameSite: 'lax',
   });
 
