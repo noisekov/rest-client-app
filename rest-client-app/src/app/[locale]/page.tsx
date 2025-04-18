@@ -34,51 +34,101 @@ export default function MainPage() {
     );
   }
 
-  return user ? (
+  return (
     <div className="flex items-center justify-center max-w-7xl mx-auto w-full px-4">
       <div className="flex flex-col gap-4 items-center">
-        <div>
-          {t('welcomeBack')}, {user.displayName}!
+        {user ? (
+          <>
+            <div>
+              {t('welcomeBack')}, {user.displayName}!
+            </div>
+            <div className="flex gap-4">
+              <Button
+                size="lg"
+                className="cursor-pointer"
+                onClick={() => handleSecureNavigation('/restful')}
+              >
+                REST Client
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="cursor-pointer"
+                onClick={() => handleSecureNavigation('/history')}
+              >
+                {t('history')}
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="cursor-pointer"
+                onClick={() => handleSecureNavigation('/variables')}
+              >
+                {t('variables')}
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p>{t('welcome')}!</p>
+            <div className="flex gap-4">
+              <Button variant="outline" size="lg" asChild>
+                <Link href="/signin">{t('sign_in')}</Link>
+              </Button>
+              <Button size="lg" asChild>
+                <Link href="/signup">{t('sign_up')}</Link>
+              </Button>
+            </div>
+          </>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[1000px]">
+          <article className="text-center border-2 border-gray-300 rounded-md bg-gray-50 p-4 max-w-[500px]">
+            <p className="text-[1.2rem] mb-2">{t('about_project')}</p>
+            {t('about')}
+          </article>
+          <article className="text-center border-2 border-gray-300 rounded-md bg-gray-50 p-4 max-w-[500px]">
+            <p className="text-[1.2rem] mb-2">{t('about_course')}</p>
+            <ul className="text-left">
+              <li>🎓 {t('knowledge')}</li>
+              <li>📚 {t('materials')}</li>
+              <li>💡 {t('education')}</li>
+              <li>📜 {t('certificate')}</li>
+            </ul>
+          </article>
         </div>
-        <div className="flex gap-4">
-          <Button
-            size="lg"
-            className="cursor-pointer"
-            onClick={() => handleSecureNavigation('/restful')}
-          >
-            REST Client
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="cursor-pointer"
-            onClick={() => handleSecureNavigation('/history')}
-          >
-            {t('history')}
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="cursor-pointer"
-            onClick={() => handleSecureNavigation('/variables')}
-          >
-            {t('variables')}
-          </Button>
-        </div>
-      </div>
-    </div>
-  ) : (
-    <div className="flex items-center justify-center max-w-7xl mx-auto w-full px-4">
-      <div className="flex flex-col gap-4 items-center">
-        <p>{t('welcome')}!</p>
-        <div className="flex gap-4">
-          <Button variant="outline" size="lg" asChild>
-            <Link href="/signin">{t('sign_in')}</Link>
-          </Button>
-          <Button size="lg" asChild>
-            <Link href="/signup">{t('sign_up')}</Link>
-          </Button>
-        </div>
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[1000px]">
+          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4 max-w-[500px]">
+            <a href="https://github.com/noisekov" target="_blank">
+              <p className="mb-2">
+                <b>noisekov</b>
+                <br />
+                <span className="text-sm">Team Lead</span>
+              </p>
+              <p>{t('vladimir')}</p>
+            </a>
+          </li>
+          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4 max-w-[500px]">
+            <a href="https://github.com/skayer81" target="_blank">
+              <p className="mb-2">
+                <b>skayer81</b>
+                <br />
+                <span className="text-sm">Frontend</span>
+              </p>
+              <p>{t('sergey')}</p>
+            </a>
+          </li>
+          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4 max-w-[500px]">
+            <a href="https://github.com/LaraNU" target="_blank">
+              <p className="mb-2">
+                <b>LaraNU</b>
+                <br />
+                <span className="text-sm">Frontend</span>
+              </p>
+              <p>{t('lara')}</p>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   );
