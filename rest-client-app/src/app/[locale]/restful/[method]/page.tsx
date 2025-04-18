@@ -274,6 +274,9 @@ export default function RestAPI() {
       );
       const request = new sdk.Request(resolvedEndpoint);
       request.method = data.method;
+      getValues('headers').forEach((header) => {
+        request.addHeader({ key: header.key, value: header.value });
+      });
       const options = {
         indentCount: 3,
         indentType: 'Space',
