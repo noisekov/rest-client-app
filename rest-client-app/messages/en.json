@@ -75,5 +75,8 @@
     "variableExists": "Variable with the name \"{key}\" already exists. Please use a different name.",
     "notFound": "No variables yet",
     "delete": "Delete"
+  },
+  "Auth": {
+    "sessionExpired": "Your session has expired. Please log in again."
   }
 }
