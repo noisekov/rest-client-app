@@ -399,6 +399,24 @@ export default function RestAPI() {
                   </FormItem>
                 )}
               />
+              <div className="mb-2">
+                <FormField
+                  control={control}
+                  name="body"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('request_body')}</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder={t.raw('body_placeholder')}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <div className="flex flex-row items-end gap-4">
                 <FormField
                   control={form.control}
@@ -439,7 +457,7 @@ export default function RestAPI() {
                   {t('generate_code')}
                 </Button>
               </div>
-              <div className="mb-4">
+              <div className="mb-2">
                 <FormField
                   control={control}
                   name="code"
@@ -451,24 +469,6 @@ export default function RestAPI() {
                           placeholder={t('code_placeholder')}
                           {...field}
                           value={generateCode}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="mb-2">
-                <FormField
-                  control={control}
-                  name="body"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('request_body')}</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder={t.raw('body_placeholder')}
-                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
