@@ -29,7 +29,10 @@ export function HeadersList({
       >
         {t('add_header')}
       </Button>
-      <div className="grid grid-cols-2 gap-2 mb-2 font-medium">
+      <div
+        className="grid grid-cols-2 gap-2 mb-2 font-medium"
+        style={{ gridTemplateColumns: '1fr 1fr 100px' }}
+      >
         <Label>{t('key')}</Label>
         <Label>{t('value')}</Label>
       </div>

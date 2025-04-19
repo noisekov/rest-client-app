@@ -18,6 +18,7 @@ export type FormValues = {
   method: Methods;
   endpoint: string;
   headers: Header[];
-  code?: string;
+  language?: string;
   body?: string;
+  code?: string;
 };

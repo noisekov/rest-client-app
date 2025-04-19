@@ -34,7 +34,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-const Code = {
+const mapLanguages = {
   curl: '{ "language": "cURL", "variant": "cURL" }',
   'JavaScript (Fetch api)': '{ "language": "JavaScript", "variant": "Fetch" }',
   'JavaScript (XHR)': '{ "language": "JavaScript", "variant": "XHR" }',
@@ -55,12 +55,12 @@ export default function RestAPI() {
   const defaultMethod = Object.values(Methods).includes(paramsMethod as Methods)
     ? (paramsMethod as Methods)
     : Methods.GET;
-  const defaultCode = Code.curl;
+  const defaultLanguage = mapLanguages.curl;
   const [response, setResponse] = useState<{
     status: number | null;
     body: string;
-    code: string;
-  }>({ status: null, body: '', code: '' });
+  }>({ status: null, body: '' });
+  const [generateCode, setGenerateCode] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<FormValues>({
@@ -68,8 +68,9 @@ export default function RestAPI() {
       method: defaultMethod,
       endpoint: '',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
-      code: defaultCode,
+      language: defaultLanguage,
       body: '',
+      code: '',
     },
   });
 
@@ -116,6 +117,8 @@ export default function RestAPI() {
       form.setValue('headers', dataHistoryRequest.headers);
       form.setValue('body', dataHistoryRequest.body);
       form.setValue('endpoint', dataHistoryRequest.endpoint);
+      form.setValue('language', dataHistoryRequest.language);
+      setGenerateCode(dataHistoryRequest.code);
 
       clearIndex();
       setURL(dataHistoryRequest);
@@ -269,46 +272,10 @@ export default function RestAPI() {
         responseBody = await response.text();
       }
 
-      const { language, variant } = JSON.parse(
-        getValues('code') || '{ "language": "cURL", "variant": "cURL" }'
-      );
-      const request = new sdk.Request(resolvedEndpoint);
-      request.method = data.method;
-      getValues('headers').forEach((header) => {
-        request.addHeader({ key: header.key, value: header.value });
+      setResponse({
+        status: response.status,
+        body: responseBody,
       });
-      request.body = new sdk.RequestBody({
-        mode: 'raw',
-        raw: getValues('body'),
-      });
-      const options = {
-        indentCount: 3,
-        indentType: 'Space',
-        trimRequestBody: true,
-        followRedirect: true,
-      };
-      codegen.convert(
-        language,
-        variant,
-        request,
-        options,
-        function (error: string, code: string) {
-          let isError = false;
-
-          if (error) {
-            toast.error(error, {
-              richColors: false,
-            });
-            isError = true;
-          }
-
-          setResponse({
-            status: response.status,
-            body: responseBody,
-            code: isError ? '' : code,
-          });
-        }
-      );
 
       const historyRequestsArr = JSON.parse(historyRequests);
       historyRequestsArr.unshift({
@@ -316,7 +283,8 @@ export default function RestAPI() {
         endpoint: resolvedEndpoint,
         headers: resolvedHeaders,
         body: resolvedBody,
-        code: getValues('code'),
+        language: getValues('language'),
+        code: generateCode,
       });
 
       localStorage.setItem(
@@ -337,6 +305,46 @@ export default function RestAPI() {
       setIsLoading(false);
     }
   }
+
+  const handleLanguageChange = () => {
+    const { language, variant } = JSON.parse(
+      getValues('language') || '{ "language": "cURL", "variant": "cURL" }'
+    );
+
+    const request = new sdk.Request(getValues('endpoint'));
+    request.method = getValues('method');
+    getValues('headers').forEach((header) => {
+      request.addHeader({ key: header.key, value: header.value });
+    });
+    request.body = new sdk.RequestBody({
+      mode: 'raw',
+      raw: getValues('body'),
+    });
+    const options = {
+      indentCount: 3,
+      indentType: 'Space',
+      trimRequestBody: true,
+      followRedirect: true,
+    };
+    codegen.convert(
+      language,
+      variant,
+      request,
+      options,
+      function (error: string, code: string) {
+        let isError = false;
+
+        if (error) {
+          toast.error(error, {
+            richColors: false,
+          });
+          isError = true;
+        }
+
+        setGenerateCode(isError ? '' : code);
+      }
+    );
+  };
 
   return (
     <div className="flex items-center justify-center max-w-7xl mx-auto w-full px-4">
@@ -391,33 +399,46 @@ export default function RestAPI() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="code"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('code_language')}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="w-[200px]">
-                        <SelectValue placeholder="Code" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(Code).map(([key, code]) => {
-                          return (
-                            <SelectItem key={crypto.randomUUID()} value={code}>
-                              {key}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex flex-row items-end gap-4">
+                <FormField
+                  control={form.control}
+                  name="language"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('code_language')}</FormLabel>
+                      <Select
+                        key={crypto.randomUUID()}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className="w-[200px]">
+                          <SelectValue placeholder="Language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.entries(mapLanguages).map(([key, code]) => {
+                            return (
+                              <SelectItem
+                                key={crypto.randomUUID()}
+                                value={code}
+                              >
+                                {key}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="button"
+                  className="cursor-pointer max-w-[150px]"
+                  onClick={handleLanguageChange}
+                >
+                  {t('generate_code')}
+                </Button>
+              </div>
               <div className="mb-4">
                 <FormField
                   control={control}
@@ -429,7 +450,7 @@ export default function RestAPI() {
                         <Textarea
                           placeholder={t('code_placeholder')}
                           {...field}
-                          value={response.code}
+                          value={generateCode}
                         />
                       </FormControl>
                       <FormMessage />
