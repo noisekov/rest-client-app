@@ -129,7 +129,7 @@ export function UserForm() {
               <FormItem>
                 <FormLabel>{t('email')}</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="abc@gmail.com" {...field} />
+                  <Input placeholder="abc@gmail.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
