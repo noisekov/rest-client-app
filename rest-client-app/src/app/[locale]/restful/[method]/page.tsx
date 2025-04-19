@@ -34,7 +34,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-const mapLanguages = {
+const MAP_LANGUAGES = {
   curl: '{ "language": "cURL", "variant": "cURL" }',
   'JavaScript (Fetch api)': '{ "language": "JavaScript", "variant": "Fetch" }',
   'JavaScript (XHR)': '{ "language": "JavaScript", "variant": "XHR" }',
@@ -55,7 +55,7 @@ export default function RestAPI() {
   const defaultMethod = Object.values(Methods).includes(paramsMethod as Methods)
     ? (paramsMethod as Methods)
     : Methods.GET;
-  const defaultLanguage = mapLanguages.curl;
+  const defaultLanguage = MAP_LANGUAGES.curl;
   const [response, setResponse] = useState<{
     status: number | null;
     body: string;
@@ -433,7 +433,7 @@ export default function RestAPI() {
                           <SelectValue placeholder="Language" />
                         </SelectTrigger>
                         <SelectContent>
-                          {Object.entries(mapLanguages).map(([key, code]) => {
+                          {Object.entries(MAP_LANGUAGES).map(([key, code]) => {
                             return (
                               <SelectItem
                                 key={crypto.randomUUID()}
