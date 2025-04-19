@@ -26,24 +26,8 @@ import { useVariableStore } from '@/store/variableStore';
 import { useAuthStore } from '@/store/authStore';
 import { replaceVariables } from '@/utils/replaceVariables';
 import { toast } from 'sonner';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-
-const MAP_LANGUAGES = {
-  curl: '{ "language": "cURL", "variant": "cURL" }',
-  'JavaScript (Fetch api)': '{ "language": "JavaScript", "variant": "Fetch" }',
-  'JavaScript (XHR)': '{ "language": "JavaScript", "variant": "XHR" }',
-  NodeJS: '{ "language": "NodeJS", "variant": "Axios" }',
-  Python: '{ "language": "Python", "variant": "Requests" }',
-  Java: '{ "language": "Java", "variant": "OkHttp" }',
-  'C#': '{ "language": "C#", "variant": "HttpClient" }',
-  Go: '{ "language": "Go", "variant": "Native" }',
-};
+import { MAP_LANGUAGES } from '@/utils/constants';
+import SelectLanguage from '@/components/selectLanguage/SelectLanguage';
 
 export default function RestAPI() {
   const t = useTranslations('Restful');
@@ -424,27 +408,10 @@ export default function RestAPI() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{t('code_language')}</FormLabel>
-                      <Select
-                        key={crypto.randomUUID()}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <SelectTrigger className="w-[200px]">
-                          <SelectValue placeholder="Language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(MAP_LANGUAGES).map(([key, code]) => {
-                            return (
-                              <SelectItem
-                                key={crypto.randomUUID()}
-                                value={code}
-                              >
-                                {key}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectContent>
-                      </Select>
+                      <SelectLanguage
+                        language={field.value}
+                        onLanguageChange={field.onChange}
+                      />
                       <FormMessage />
                     </FormItem>
                   )}

@@ -14,6 +14,17 @@ export type Header = {
   value: string;
 };
 
+export type typeLanguages = {
+  curl: string;
+  'JavaScript (Fetch api)': string;
+  'JavaScript (XHR)': string;
+  NodeJS: string;
+  Python: string;
+  Java: string;
+  'C#': string;
+  Go: string;
+};
+
 export type FormValues = {
   method: Methods;
   endpoint: string;
