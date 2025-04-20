@@ -344,7 +344,9 @@ export default function RestAPI() {
   return (
     <div className="flex items-center justify-center max-w-7xl mx-auto w-full px-4">
       <section className="max-w-4xl w-full px-4">
-        <h2 className="text-2xl font-bold mb-6">{t('title')}</h2>
+        <h2 className="text-center text-[3rem] leading-[1.167] mb-4">
+          {t('title')}
+        </h2>
         <Form {...form}>
           <form className="mb-8" onSubmit={handleSubmit(submitForm)}>
             <fieldset className="flex flex-col gap-5 border-2 border-gray-300 rounded-md p-4 bg-gray-50">
