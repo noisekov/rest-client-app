@@ -61,9 +61,9 @@ export default function Variables() {
   return (
     <div className="flex items-start justify-center max-w-7xl mx-auto w-full px-4">
       <div className="flex flex-col gap-4 max-w-2xl w-full">
-        <div className="text-center text-[3rem] leading-[1.167]">
+        <h2 className="text-center text-[3rem] leading-[1.167]">
           {t('title')}
-        </div>
+        </h2>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -102,7 +102,7 @@ export default function Variables() {
         </Form>
 
         <div className="mt-20">
-          <h2 className="text-xl font-semibold mb-3">{t('subtitle')}</h2>
+          <h3 className="text-xl font-semibold mb-3">{t('subtitle')}</h3>
 
           {loading ? (
             <div className="flex flex-col space-y-3">
