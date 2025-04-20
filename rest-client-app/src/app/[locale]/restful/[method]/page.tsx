@@ -24,26 +24,10 @@ import { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useVariableStore } from '@/store/variableStore';
 import { useAuthStore } from '@/store/authStore';
-import { replaceVariables } from '@/utils/replaceVariables';
 import { toast } from 'sonner';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-
-const Code = {
-  curl: '{ "language": "cURL", "variant": "cURL" }',
-  'JavaScript (Fetch api)': '{ "language": "JavaScript", "variant": "Fetch" }',
-  'JavaScript (XHR)': '{ "language": "JavaScript", "variant": "XHR" }',
-  NodeJS: '{ "language": "NodeJS", "variant": "Axios" }',
-  Python: '{ "language": "Python", "variant": "Requests" }',
-  Java: '{ "language": "Java", "variant": "OkHttp" }',
-  'C#': '{ "language": "C#", "variant": "HttpClient" }',
-  Go: '{ "language": "Go", "variant": "Native" }',
-};
+import { MAP_LANGUAGES } from '@/utils/constants';
+import SelectLanguage from '@/components/selectLanguage/SelectLanguage';
+import { resolveFormDataWithVariables } from '@/utils/resolveFormDataWithVariables';
 
 export default function RestAPI() {
   const t = useTranslations('Restful');
@@ -55,12 +39,12 @@ export default function RestAPI() {
   const defaultMethod = Object.values(Methods).includes(paramsMethod as Methods)
     ? (paramsMethod as Methods)
     : Methods.GET;
-  const defaultCode = Code.curl;
+  const defaultLanguage = MAP_LANGUAGES.curl;
   const [response, setResponse] = useState<{
     status: number | null;
     body: string;
-    code: string;
-  }>({ status: null, body: '', code: '' });
+  }>({ status: null, body: '' });
+  const [generateCode, setGenerateCode] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<FormValues>({
@@ -68,8 +52,9 @@ export default function RestAPI() {
       method: defaultMethod,
       endpoint: '',
       headers: [{ id: crypto.randomUUID(), key: '', value: '' }],
-      code: defaultCode,
+      language: defaultLanguage,
       body: '',
+      code: '',
     },
   });
 
@@ -116,6 +101,8 @@ export default function RestAPI() {
       form.setValue('headers', dataHistoryRequest.headers);
       form.setValue('body', dataHistoryRequest.body);
       form.setValue('endpoint', dataHistoryRequest.endpoint);
+      form.setValue('language', dataHistoryRequest.language);
+      setGenerateCode(dataHistoryRequest.code);
 
       clearIndex();
       setURL(dataHistoryRequest);
@@ -190,34 +177,16 @@ export default function RestAPI() {
   async function submitForm(data: FormValues) {
     setIsLoading(true);
 
-    let hasMissing = false;
     const notifyMissing = (key: string) => {
-      hasMissing = true;
-
       toast.error(t('variableNotFound', { key: `{{${key}}}` }), {
         richColors: true,
       });
     };
-
-    const resolvedEndpoint = replaceVariables(
-      data.endpoint,
-      variables,
-      notifyMissing
-    );
-
-    const resolvedBody = data.body
-      ? replaceVariables(data.body, variables, notifyMissing)
-      : undefined;
-
-    const resolvedHeaders = data.headers.map((header) => ({
-      ...header,
-      key: replaceVariables(header.key, variables, notifyMissing) || '',
-      value: replaceVariables(header.value, variables, notifyMissing) || '',
-    }));
+    const { resolvedEndpoint, resolvedBody, resolvedHeaders, hasMissing } =
+      resolveFormDataWithVariables(data, variables, notifyMissing);
 
     if (hasMissing || !resolvedEndpoint) {
       setIsLoading(false);
-
       return;
     }
 
@@ -269,46 +238,10 @@ export default function RestAPI() {
         responseBody = await response.text();
       }
 
-      const { language, variant } = JSON.parse(
-        getValues('code') || '{ "language": "cURL", "variant": "cURL" }'
-      );
-      const request = new sdk.Request(resolvedEndpoint);
-      request.method = data.method;
-      getValues('headers').forEach((header) => {
-        request.addHeader({ key: header.key, value: header.value });
+      setResponse({
+        status: response.status,
+        body: responseBody,
       });
-      request.body = new sdk.RequestBody({
-        mode: 'raw',
-        raw: getValues('body'),
-      });
-      const options = {
-        indentCount: 3,
-        indentType: 'Space',
-        trimRequestBody: true,
-        followRedirect: true,
-      };
-      codegen.convert(
-        language,
-        variant,
-        request,
-        options,
-        function (error: string, code: string) {
-          let isError = false;
-
-          if (error) {
-            toast.error(error, {
-              richColors: false,
-            });
-            isError = true;
-          }
-
-          setResponse({
-            status: response.status,
-            body: responseBody,
-            code: isError ? '' : code,
-          });
-        }
-      );
 
       const historyRequestsArr = JSON.parse(historyRequests);
       historyRequestsArr.unshift({
@@ -316,7 +249,8 @@ export default function RestAPI() {
         endpoint: resolvedEndpoint,
         headers: resolvedHeaders,
         body: resolvedBody,
-        code: getValues('code'),
+        language: getValues('language'),
+        code: generateCode,
       });
 
       localStorage.setItem(
@@ -338,10 +272,81 @@ export default function RestAPI() {
     }
   }
 
+  const handleGenerateCode = () => {
+    const { language, variant } = JSON.parse(
+      getValues('language') || '{ "language": "cURL", "variant": "cURL" }'
+    );
+
+    let hasMissing = false;
+    const notifyMissing = (key: string) => {
+      hasMissing = true;
+
+      toast.error(t('variableNotFound', { key: `{{${key}}}` }), {
+        richColors: true,
+      });
+    };
+
+    const method = getValues('method');
+
+    const formData = {
+      endpoint: getValues('endpoint'),
+      body: getValues('body'),
+      headers: getValues('headers'),
+      method,
+    };
+
+    const { resolvedEndpoint, resolvedBody, resolvedHeaders } =
+      resolveFormDataWithVariables(formData, variables, notifyMissing);
+
+    const request = new sdk.Request(resolvedEndpoint);
+    request.method = method;
+
+    resolvedHeaders.forEach((header) => {
+      request.addHeader({ key: header.key, value: header.value });
+    });
+
+    request.body = new sdk.RequestBody({
+      mode: 'raw',
+      raw: resolvedBody,
+    });
+
+    if (hasMissing || !resolvedEndpoint) {
+      return;
+    }
+
+    const options = {
+      indentCount: 3,
+      indentType: 'Space',
+      trimRequestBody: true,
+      followRedirect: true,
+    };
+
+    codegen.convert(
+      language,
+      variant,
+      request,
+      options,
+      function (error: string, code: string) {
+        let isError = false;
+
+        if (error) {
+          toast.error(error, {
+            richColors: false,
+          });
+          isError = true;
+        }
+
+        setGenerateCode(isError ? '' : code);
+      }
+    );
+  };
+
   return (
     <div className="flex items-center justify-center max-w-7xl mx-auto w-full px-4">
       <section className="max-w-4xl w-full px-4">
-        <h2 className="text-2xl font-bold mb-6">{t('title')}</h2>
+        <h2 className="text-center text-[3rem] leading-[1.167] mb-4">
+          {t('title')}
+        </h2>
         <Form {...form}>
           <form className="mb-8" onSubmit={handleSubmit(submitForm)}>
             <fieldset className="flex flex-col gap-5 border-2 border-gray-300 rounded-md p-4 bg-gray-50">
@@ -391,52 +396,6 @@ export default function RestAPI() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="code"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('code_language')}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="w-[200px]">
-                        <SelectValue placeholder="Code" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(Code).map(([key, code]) => {
-                          return (
-                            <SelectItem key={crypto.randomUUID()} value={code}>
-                              {key}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="mb-4">
-                <FormField
-                  control={control}
-                  name="code"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('code')}</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder={t('code_placeholder')}
-                          {...field}
-                          value={response.code}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
               <div className="mb-2">
                 <FormField
                   control={control}
@@ -448,6 +407,48 @@ export default function RestAPI() {
                         <Textarea
                           placeholder={t.raw('body_placeholder')}
                           {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex flex-row items-end gap-4">
+                <FormField
+                  control={form.control}
+                  name="language"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('code_language')}</FormLabel>
+                      <SelectLanguage
+                        language={field.value}
+                        onLanguageChange={field.onChange}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="button"
+                  className="cursor-pointer max-w-[150px]"
+                  onClick={handleGenerateCode}
+                >
+                  {t('generate_code')}
+                </Button>
+              </div>
+              <div className="mb-2">
+                <FormField
+                  control={control}
+                  name="code"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('code')}</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder={t('code_placeholder')}
+                          {...field}
+                          value={generateCode}
                         />
                       </FormControl>
                       <FormMessage />

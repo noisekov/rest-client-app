@@ -70,7 +70,8 @@
     "value": "Value",
     "remove": "Remove",
     "variableNotFound": "Variable {key} not found",
-    "code_language": "Choose language"
+    "code_language": "Choose language",
+    "generate_code": "Generate Code"
   },
   "History": {
     "title": "You haven't executed any requests.",

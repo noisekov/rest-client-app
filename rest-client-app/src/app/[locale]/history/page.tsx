@@ -30,17 +30,20 @@ const History = () => {
           </>
         ) : (
           <>
-            <p>{t('requests')}</p>
+            <h2 className="text-center text-[3rem] leading-[1.167]">
+              {t('requests')}
+            </h2>
             <ul className="border-2 border-gray-300 rounded-md p-4 bg-gray-50 text-left">
               {requests.map((request, index) => (
-                <li key={crypto.randomUUID()}>
+                <li key={crypto.randomUUID()} className="mb-1">
                   <span className="mr-2">{index + 1}.</span>
                   <Link
                     href={`/restful/${request.method}`}
                     className="hover:underline hover:text-blue-400"
                     onClick={() => setIndexLinkInHistoryPage(index)}
                   >
-                    {`${request.method} ${request.endpoint}`}
+                    <b>{request.method}</b>
+                    {': ' + request.endpoint}
                   </Link>
                 </li>
               ))}
