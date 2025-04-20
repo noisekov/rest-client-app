@@ -290,7 +290,7 @@ export default function RestAPI() {
     }
   }
 
-  const handleLanguageChange = () => {
+  const handleGenerateCode = () => {
     const { language, variant } = JSON.parse(
       getValues('language') || '{ "language": "cURL", "variant": "cURL" }'
     );
@@ -419,7 +419,7 @@ export default function RestAPI() {
                 <Button
                   type="button"
                   className="cursor-pointer max-w-[150px]"
-                  onClick={handleLanguageChange}
+                  onClick={handleGenerateCode}
                 >
                   {t('generate_code')}
                 </Button>
