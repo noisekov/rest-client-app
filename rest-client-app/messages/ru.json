@@ -70,7 +70,8 @@
     "value": "Значение",
     "remove": "Удалить",
     "variableNotFound": "Переменная {key} не найдена",
-    "code_language": "Выберите язык"
+    "code_language": "Выберите язык",
+    "generate_code": "Сгенерировать код"
   },
   "History": {
     "title": "Вы не выполнили ни одного запроса.",
