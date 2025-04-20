@@ -5,7 +5,7 @@ test.describe('main page', () => {
     await page.goto('http://localhost:3000/en');
   });
 
-  test('has title', async ({ page }) => {
+  test('has text', async ({ page }) => {
     await expect(
       page.getByText('E-certificate after completion.')
     ).toBeVisible();
