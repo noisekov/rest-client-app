@@ -109,16 +109,6 @@ export default function MainPage() {
             </a>
           </li>
           <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4 max-w-[500px]">
-            <a href="https://github.com/skayer81" target="_blank">
-              <p className="mb-2">
-                <b>skayer81</b>
-                <br />
-                <span className="text-sm">Frontend</span>
-              </p>
-              <p>{t('sergey')}</p>
-            </a>
-          </li>
-          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4 max-w-[500px]">
             <a href="https://github.com/LaraNU" target="_blank">
               <p className="mb-2">
                 <b>LaraNU</b>
@@ -126,6 +116,16 @@ export default function MainPage() {
                 <span className="text-sm">Frontend</span>
               </p>
               <p>{t('lara')}</p>
+            </a>
+          </li>
+          <li className="border-2 border-gray-300 rounded-md bg-gray-50 text-center p-4 max-w-[500px]">
+            <a href="https://github.com/skayer81" target="_blank">
+              <p className="mb-2">
+                <b>skayer81</b>
+                <br />
+                <span className="text-sm">Frontend</span>
+              </p>
+              <p>{t('sergey')}</p>
             </a>
           </li>
         </ul>
