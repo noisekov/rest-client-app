@@ -57,13 +57,13 @@ test.describe('SignIn page', () => {
 
   test('displays firebase error on wrong credentials', async ({ page }) => {
     await page.route('**/api/set-token', (route) =>
-      route.fulfill({ status: 401, body: 'Unauthorized' })
+      route.fulfill({ status: 400, body: 'Unauthorized' })
     );
 
     await page.getByLabel('Email').fill('wrong@example.com');
     await page.getByLabel('Password').fill('WrongPass123!');
     await page.getByRole('button', { name: 'Submit' }).click();
 
-    await expect(page.getByText(/Invalid credentials/i)).toBeVisible();
+    await expect(page.getByText(/invalid credentials/i)).toBeVisible();
   });
 });
