@@ -24,10 +24,10 @@ import { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useVariableStore } from '@/store/variableStore';
 import { useAuthStore } from '@/store/authStore';
-import { replaceVariables } from '@/utils/replaceVariables';
 import { toast } from 'sonner';
 import { MAP_LANGUAGES } from '@/utils/constants';
 import SelectLanguage from '@/components/selectLanguage/SelectLanguage';
+import { resolveFormDataWithVariables } from '@/utils/resolveFormDataWithVariables';
 
 export default function RestAPI() {
   const t = useTranslations('Restful');
@@ -177,34 +177,16 @@ export default function RestAPI() {
   async function submitForm(data: FormValues) {
     setIsLoading(true);
 
-    let hasMissing = false;
     const notifyMissing = (key: string) => {
-      hasMissing = true;
-
       toast.error(t('variableNotFound', { key: `{{${key}}}` }), {
         richColors: true,
       });
     };
-
-    const resolvedEndpoint = replaceVariables(
-      data.endpoint,
-      variables,
-      notifyMissing
-    );
-
-    const resolvedBody = data.body
-      ? replaceVariables(data.body, variables, notifyMissing)
-      : undefined;
-
-    const resolvedHeaders = data.headers.map((header) => ({
-      ...header,
-      key: replaceVariables(header.key, variables, notifyMissing) || '',
-      value: replaceVariables(header.value, variables, notifyMissing) || '',
-    }));
+    const { resolvedEndpoint, resolvedBody, resolvedHeaders, hasMissing } =
+      resolveFormDataWithVariables(data, variables, notifyMissing);
 
     if (hasMissing || !resolvedEndpoint) {
       setIsLoading(false);
-
       return;
     }
 
@@ -304,30 +286,24 @@ export default function RestAPI() {
       });
     };
 
-    const resolvedEndpoint = replaceVariables(
-      getValues('endpoint'),
-      variables,
-      notifyMissing
-    );
+    const method = getValues('method');
 
-    const resolvedHeaders = getValues('headers').map((header) => ({
-      ...header,
-      key: replaceVariables(header.key, variables, notifyMissing) || '',
-      value: replaceVariables(header.value, variables, notifyMissing) || '',
-    }));
+    const formData = {
+      endpoint: getValues('endpoint'),
+      body: getValues('body'),
+      headers: getValues('headers'),
+      method,
+    };
+
+    const { resolvedEndpoint, resolvedBody, resolvedHeaders } =
+      resolveFormDataWithVariables(formData, variables, notifyMissing);
 
     const request = new sdk.Request(resolvedEndpoint);
-
-    request.method = getValues('method');
+    request.method = method;
 
     resolvedHeaders.forEach((header) => {
       request.addHeader({ key: header.key, value: header.value });
     });
-
-    const rawBody = getValues('body');
-    const resolvedBody = rawBody
-      ? replaceVariables(rawBody, variables, notifyMissing)
-      : undefined;
 
     request.body = new sdk.RequestBody({
       mode: 'raw',
