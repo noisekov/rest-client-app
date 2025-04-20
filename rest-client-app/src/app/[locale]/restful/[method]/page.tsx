@@ -295,21 +295,56 @@ export default function RestAPI() {
       getValues('language') || '{ "language": "cURL", "variant": "cURL" }'
     );
 
-    const request = new sdk.Request(getValues('endpoint'));
+    let hasMissing = false;
+    const notifyMissing = (key: string) => {
+      hasMissing = true;
+
+      toast.error(t('variableNotFound', { key: `{{${key}}}` }), {
+        richColors: true,
+      });
+    };
+
+    const resolvedEndpoint = replaceVariables(
+      getValues('endpoint'),
+      variables,
+      notifyMissing
+    );
+
+    const resolvedHeaders = getValues('headers').map((header) => ({
+      ...header,
+      key: replaceVariables(header.key, variables, notifyMissing) || '',
+      value: replaceVariables(header.value, variables, notifyMissing) || '',
+    }));
+
+    const request = new sdk.Request(resolvedEndpoint);
+
     request.method = getValues('method');
-    getValues('headers').forEach((header) => {
+
+    resolvedHeaders.forEach((header) => {
       request.addHeader({ key: header.key, value: header.value });
     });
+
+    const rawBody = getValues('body');
+    const resolvedBody = rawBody
+      ? replaceVariables(rawBody, variables, notifyMissing)
+      : undefined;
+
     request.body = new sdk.RequestBody({
       mode: 'raw',
-      raw: getValues('body'),
+      raw: resolvedBody,
     });
+
+    if (hasMissing || !resolvedEndpoint) {
+      return;
+    }
+
     const options = {
       indentCount: 3,
       indentType: 'Space',
       trimRequestBody: true,
       followRedirect: true,
     };
+
     codegen.convert(
       language,
       variant,
