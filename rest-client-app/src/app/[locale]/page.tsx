@@ -46,7 +46,7 @@ export default function MainPage() {
               <Button
                 size="lg"
                 className="cursor-pointer"
-                onClick={() => handleSecureNavigation('/restful')}
+                onClick={() => handleSecureNavigation('/restful/GET')}
               >
                 REST Client
               </Button>
