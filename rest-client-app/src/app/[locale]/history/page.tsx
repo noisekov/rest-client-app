@@ -25,7 +25,7 @@ const History = () => {
             <p className="m-0">{t('title')}</p>
             <p className="m-0">{t('subtitle')}</p>
             <Button asChild size="sm">
-              <Link href="/restful">REST Client</Link>
+              <Link href="/restful/GET">REST Client</Link>
             </Button>
           </>
         ) : (
