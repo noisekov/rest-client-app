@@ -1,0 +1,103 @@
+{
+  "Header": {
+    "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "sign_out": "Sign Out"
+  },
+  "MainPage": {
+    "welcome": "Welcome",
+    "welcomeBack": "Welcome Back",
+    "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "history": "History",
+    "variables": "Variables",
+    "about": "This web application is a lightweight Postman-inspired tool for REST API testing. It enables sending HTTP requests, managing headers and variables, maintaining request history, supporting user authentication and internationalization, while also generating code snippets for popular programming languages. Built with React/TypeScript and Next.js, it utilizes Firebase for authentication.",
+    "about_project": "About project",
+    "about_course": "About course",
+    "knowledge": "Open to all (age/background/location), basic knowledge required.",
+    "materials": "Public materials on YouTube & GitHub.",
+    "education": "Free education driven by mentorship & community.",
+    "certificate": "E-certificate after completion.",
+    "vladimir": "Vladimir from Saint-Petersburg implemented the project by initializing and configuring the setup, adding internationalization support, developing the history page and implement the REST client generation code, designing the main page UI with content, and writing test cases.",
+    "lara": "Larisa from Yaroslavl integrated Firebase-based authentication, designed key UI elements including the header, footer, and 404 page, implemented robust error handling, created a dedicated variables page, and wrote comprehensive tests for the features.",
+    "sergey": "Sergey from Rybinsk developed the REST client, implementing all related functionality without generation code."
+  },
+  "SignIn": {
+    "title": "Sign In",
+    "email": "Email",
+    "email_error": "Please enter a valid email address with at least 5 characters",
+    "password": "Password",
+    "submit": "Submit",
+    "loading": "Loading",
+    "subtitle": "Not Registered Yet?",
+    "subtitle_link": "Create an account",
+    "password_description": "Must be at least 8 characters long, and include: one letter one number one special character",
+    "password_error": "Password must contain at least one letter, one number, and one special character"
+  },
+  "SignUp": {
+    "title": "Sign Up",
+    "email": "Email",
+    "email_error": "Please enter a valid email address with at least 5 characters",
+    "username": "Username",
+    "username_error": "Username must be at least 2 characters",
+    "info": "This is your public display name",
+    "password": "Password",
+    "submit": "Submit",
+    "loading": "Loading",
+    "subtitle": "Already have an account?",
+    "subtitle_link": "Log in",
+    "password_description": "Must be at least 8 characters long, and include: one letter one number one special character",
+    "password_error": "Password must contain at least one letter, one number, and one special character"
+  },
+  "Restful": {
+    "title": "RestAPI",
+    "rest_client": "REST Client",
+    "endpoint_url": "Endpoint URL",
+    "code": "Code",
+    "code_placeholder": "// Your code here",
+    "request_body": "Request Body",
+    "body_placeholder": "{\n  \"key\": \"value\"\n}",
+    "send_request": "Send Request",
+    "loading": "Loading",
+    "response": "Response",
+    "status_code": "Status Code",
+    "response_body": "Response Body",
+    "select_method": "Select a method",
+    "methods_label": "METHODS",
+    "headers": "Headers",
+    "add_header": "Add header",
+    "key": "Key",
+    "value": "Value",
+    "remove": "Remove",
+    "variableNotFound": "Variable {key} not found",
+    "code_language": "Choose language",
+    "generate_code": "Generate Code"
+  },
+  "History": {
+    "title": "You haven't executed any requests.",
+    "subtitle": "It's empty here. Try:",
+    "requests": "History Requests"
+  },
+  "Variables": {
+    "title": "Variables",
+    "subtitle": "Your Variables:",
+    "key": "variable name",
+    "value": "value",
+    "add": "Add",
+    "variableExists": "Variable with the name \"{key}\" already exists. Please use a different name.",
+    "notFound": "No variables yet",
+    "delete": "Delete"
+  },
+  "Auth": {
+    "sessionExpired": "Your session has expired. Please log in again."
+  },
+  "ErrorBoundary": {
+    "title": "Something went wrong.",
+    "description": "Please try again later or contact support."
+  },
+  "NotFound": {
+    "title": "Oops! This page doesn’t exist.",
+    "description": "The page you are trying to reach might have been removed, had its name changed, or is temporarily unavailable.",
+    "goHome": "Go back to home"
+  }
+}
